@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="128" viewBox="0 0 160 128">
+  <defs>
+    <linearGradient id="golden" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1205"/>
+      <stop offset="35%" stop-color="#120d04"/>
+      <stop offset="100%" stop-color="#000"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d4a020" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#d4a020" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="mtn" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f0c06"/>
+      <stop offset="100%" stop-color="#060503"/>
+    </linearGradient>
+  </defs>
+  <rect width="160" height="128" fill="url(#golden)"/>
+  <!-- Golden hour sky glow -->
+  <ellipse cx="30" cy="50" rx="50" ry="35" fill="url(#glow)"/>
+  <!-- Mountain silhouettes -->
+  <path d="M0,65 L20,42 L45,58 L70,38 L95,55 L120,45 L160,60 L160,75 L0,75 Z" fill="url(#mtn)"/>
+  <!-- Road -->
+  <rect x="0" y="72" width="160" height="56" fill="#040302"/>
+  <!-- Road center line -->
+  <line x1="60" y1="80" x2="75" y2="80" stroke="#d4a020" stroke-opacity="0.08" stroke-width="0.5"/>
+  <line x1="85" y1="80" x2="100" y2="80" stroke="#d4a020" stroke-opacity="0.06" stroke-width="0.5"/>
+  <!-- Car silhouette - sporty sedan -->
+  <path d="M30,84 L42,73 L56,69 L106,69 L120,73 L132,84 L134,84 L134,91 L128,91 L124,87 L114,87 L110,91 L50,91 L46,87 L36,87 L32,91 L26,91 L26,84 Z" fill="#060503"/>
+  <!-- Headlights -->
+  <rect x="130" y="79" width="4" height="2" rx="1" fill="#ffd700" opacity="0.7"/>
+  <ellipse cx="134" cy="81" rx="8" ry="4" fill="#ffd700" opacity="0.1"/>
+  <!-- Taillights -->
+  <rect x="27" y="80" width="4" height="1.5" rx="0.5" fill="#ff2222" opacity="0.6"/>
+  <!-- Window -->
+  <path d="M46,74 L58,69 L98,69 L110,74 Z" fill="#0a0804" opacity="0.5"/>
+  <!-- Golden rim highlight -->
+  <ellipse cx="46" cy="87" rx="4" ry="4" fill="none" stroke="#d4a020" stroke-opacity="0.08" stroke-width="0.5"/>
+  <ellipse cx="114" cy="87" rx="4" ry="4" fill="none" stroke="#d4a020" stroke-opacity="0.08" stroke-width="0.5"/>
+</svg>

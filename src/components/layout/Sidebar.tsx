@@ -2,13 +2,15 @@ import { useState } from 'react'
 import { ChevronLeft } from 'lucide-react'
 import AudiLogo from '../ui/AudiLogo'
 
+const BASE = import.meta.env.BASE_URL
+
 interface ChatHistoryItem {
   id: string
   carName: string
   variant: string
   promptPreview: string
   timeAgo: string
-  thumbnailGradient: string
+  thumbnail: string
 }
 
 const demoChatHistory: ChatHistoryItem[] = [
@@ -18,7 +20,7 @@ const demoChatHistory: ChatHistoryItem[] = [
     variant: 'quattro Performance',
     promptPreview: 'Create a dramatic sunset reveal with dynamic camera movements',
     timeAgo: '2 hours ago',
-    thumbnailGradient: 'linear-gradient(180deg, #0A1929 0%, #000 100%)',
+    thumbnail: `${BASE}thumb-etron-gt.svg`,
   },
   {
     id: '2',
@@ -26,7 +28,7 @@ const demoChatHistory: ChatHistoryItem[] = [
     variant: 'Carbon Edition',
     promptPreview: 'Fast-paced urban night drive with',
     timeAgo: 'Yesterday',
-    thumbnailGradient: 'linear-gradient(180deg, #1A0A29 0%, #000 100%)',
+    thumbnail: `${BASE}thumb-rs-etron.svg`,
   },
   {
     id: '3',
@@ -34,7 +36,7 @@ const demoChatHistory: ChatHistoryItem[] = [
     variant: '55 quattro',
     promptPreview: 'Elegant showcase in modern archi',
     timeAgo: '3 days ago',
-    thumbnailGradient: 'linear-gradient(180deg, #0A2919 0%, #000 100%)',
+    thumbnail: `${BASE}thumb-q8-etron.svg`,
   },
   {
     id: '4',
@@ -42,7 +44,7 @@ const demoChatHistory: ChatHistoryItem[] = [
     variant: 'Performance',
     promptPreview: 'Mountain road adventure at gold',
     timeAgo: '1 week ago',
-    thumbnailGradient: 'linear-gradient(180deg, #29190A 0%, #000 100%)',
+    thumbnail: `${BASE}thumb-rs7.svg`,
   },
 ]
 
@@ -119,20 +121,16 @@ export default function Sidebar() {
               {/* Thumbnail + Info */}
               <div className="flex" style={{ gap: 12, height: 64 }}>
                 {/* Thumbnail */}
-                <div
-                  className="shrink-0 relative overflow-hidden"
+                <img
+                  src={chat.thumbnail}
+                  alt={chat.carName}
+                  className="shrink-0 object-cover"
                   style={{
                     width: 80,
                     height: 64,
                     borderRadius: 10,
-                    background: chat.thumbnailGradient,
                   }}
-                >
-                  <div
-                    className="absolute inset-0"
-                    style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.4) 0%, transparent 100%)' }}
-                  />
-                </div>
+                />
 
                 {/* Text Info */}
                 <div className="flex-1 flex flex-col overflow-hidden" style={{ gap: 2, paddingTop: 2 }}>
