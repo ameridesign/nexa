@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Search, ChevronDown, CheckCircle } from 'lucide-react'
 
 const examplePrompts = [
@@ -10,10 +11,11 @@ const examplePrompts = [
 
 export default function Dashboard() {
   const [prompt, setPrompt] = useState('')
+  const navigate = useNavigate()
 
   const handleGenerate = () => {
     if (!prompt.trim()) return
-    // TODO: trigger video generation
+    navigate('/preview', { state: { prompt: prompt.trim() } })
   }
 
   const handleExampleClick = (example: string) => {
