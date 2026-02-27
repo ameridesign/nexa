@@ -6,6 +6,8 @@ import {
   Music,
   ChevronDown,
   RotateCcw,
+  Upload,
+  X,
 } from 'lucide-react'
 
 type TabId = 'scene' | 'composition' | 'color' | 'music'
@@ -380,16 +382,89 @@ function MusicTab() {
   const [engineVolume, setEngineVolume] = useState(50)
   const [ambience, setAmbience] = useState('City')
   const [ambienceVolume, setAmbienceVolume] = useState(30)
+  const [customFile, setCustomFile] = useState<string | null>(null)
+
+  const handleFileUpload = () => {
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = 'audio/*'
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0]
+      if (file) {
+        setCustomFile(file.name)
+        setMusicTrack('Custom')
+      }
+    }
+    input.click()
+  }
+
+  const handleRemoveCustom = () => {
+    setCustomFile(null)
+    setMusicTrack('Epic Cinematic')
+  }
 
   return (
     <div className="flex flex-col" style={{ gap: 24 }}>
+      {/* Custom Upload */}
+      <div>
+        <SectionLabel>YOUR MUSIC</SectionLabel>
+        {customFile ? (
+          <div
+            className="flex items-center justify-between"
+            style={{
+              padding: '10px 12px',
+              background: 'rgba(38, 38, 38, 0.30)',
+              borderRadius: 8,
+              border: '0.8px solid rgba(255, 255, 255, 0.10)',
+            }}
+          >
+            <div className="flex items-center" style={{ gap: 8, minWidth: 0 }}>
+              <Music size={14} color="#99A1AF" />
+              <span
+                className="truncate"
+                style={{ color: 'white', fontSize: 13, lineHeight: '20px' }}
+              >
+                {customFile}
+              </span>
+            </div>
+            <button
+              onClick={handleRemoveCustom}
+              className="shrink-0 flex items-center justify-center transition-all hover:bg-white/10"
+              style={{ width: 20, height: 20, borderRadius: 6 }}
+            >
+              <X size={12} color="#99A1AF" />
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={handleFileUpload}
+            className="w-full flex items-center justify-center transition-all hover:brightness-125"
+            style={{
+              height: 40,
+              borderRadius: 8,
+              border: '0.8px dashed rgba(255, 255, 255, 0.20)',
+              background: 'rgba(255, 255, 255, 0.03)',
+              gap: 8,
+            }}
+          >
+            <Upload size={14} color="#99A1AF" />
+            <span style={{ color: '#99A1AF', fontSize: 13, lineHeight: '20px' }}>
+              Upload audio file
+            </span>
+          </button>
+        )}
+      </div>
+
       {/* Music Track */}
       <div>
         <SectionLabel>MUSIC TRACK</SectionLabel>
         <Dropdown
           value={musicTrack}
-          options={['None', 'Epic Cinematic', 'Electronic Pulse', 'Ambient Minimal', 'Orchestral Drama', 'Lo-fi Chill', 'Rock Energy']}
-          onChange={setMusicTrack}
+          options={['None', 'Custom', 'Epic Cinematic', 'Electronic Pulse', 'Ambient Minimal', 'Orchestral Drama', 'Lo-fi Chill', 'Rock Energy']}
+          onChange={(v) => {
+            setMusicTrack(v)
+            if (v !== 'Custom') setCustomFile(null)
+          }}
         />
       </div>
 

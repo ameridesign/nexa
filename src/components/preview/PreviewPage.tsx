@@ -31,10 +31,16 @@ export default function PreviewPage() {
   const [qualityOpen, setQualityOpen] = useState(false)
   const [resolution, setResolution] = useState('4K')
   const [fps, setFps] = useState('60fps')
+  const [showSaved, setShowSaved] = useState(false)
 
   const totalDuration = shots.reduce((sum, s) => sum + s.duration, 0)
   const selectedShot = shots.find((s) => s.id === selectedShotId)
   const carImage = selectedShot?.thumbnail || `${BASE}etron.png`
+
+  const handleSave = () => {
+    setShowSaved(true)
+    setTimeout(() => setShowSaved(false), 2000)
+  }
 
   const handleAddShot = () => {
     const newId = String(nextShotId++)
@@ -230,6 +236,7 @@ export default function PreviewPage() {
           </button>
 
           <button
+            onClick={handleSave}
             className="flex-1 flex items-center justify-center transition-all hover:brightness-110"
             style={{
               minHeight: 48,
@@ -329,6 +336,31 @@ export default function PreviewPage() {
           )}
         </div>
       </footer>
+
+      {/* Save toast */}
+      {showSaved && (
+        <div
+          className="fixed flex items-center"
+          style={{
+            bottom: 100,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            padding: '10px 20px',
+            background: '#1a1d24',
+            borderRadius: 10,
+            border: '0.8px solid rgba(255, 255, 255, 0.10)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+            zIndex: 200,
+            gap: 8,
+            animation: 'fadeInUp 0.2s ease-out',
+          }}
+        >
+          <Save size={14} color="#4ade80" />
+          <span style={{ color: 'white', fontSize: 14, lineHeight: '21px' }}>
+            Saved!
+          </span>
+        </div>
+      )}
     </div>
   )
 }
