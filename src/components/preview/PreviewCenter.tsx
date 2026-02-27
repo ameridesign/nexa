@@ -10,6 +10,8 @@ interface PreviewCenterProps {
 export default function PreviewCenter({ selectedShot, carImage }: PreviewCenterProps) {
   const [showGrid, setShowGrid] = useState(false)
 
+  const hasVideo = selectedShot?.video
+
   return (
     <div
       className="flex-1 flex flex-col overflow-hidden"
@@ -50,7 +52,7 @@ export default function PreviewCenter({ selectedShot, carImage }: PreviewCenterP
         </button>
       </div>
 
-      {/* Preview Viewport — constrained to available space */}
+      {/* Preview Viewport */}
       <div
         className="flex-1 flex items-center justify-center overflow-hidden"
         style={{ padding: 24, minHeight: 0 }}
@@ -67,16 +69,28 @@ export default function PreviewCenter({ selectedShot, carImage }: PreviewCenterP
             border: '0.8px solid rgba(255, 255, 255, 0.10)',
           }}
         >
-          {/* Car image */}
-          <img
-            src={carImage}
-            alt="Preview"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{
-              opacity: 0.7,
-              animation: 'slowZoom 8s ease-in-out infinite alternate',
-            }}
-          />
+          {/* Video or Image */}
+          {hasVideo ? (
+            <video
+              key={selectedShot.video}
+              src={selectedShot.video!}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          ) : (
+            <img
+              src={carImage}
+              alt="Preview"
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{
+                opacity: 0.7,
+                animation: 'slowZoom 8s ease-in-out infinite alternate',
+              }}
+            />
+          )}
 
           {/* Grid overlay */}
           {showGrid && (

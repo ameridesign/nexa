@@ -6,6 +6,7 @@ export interface Shot {
   name: string
   duration: number
   thumbnail: string | null
+  video?: string | null
 }
 
 interface ShotsPanelProps {
