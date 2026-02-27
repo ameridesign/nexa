@@ -11,7 +11,10 @@ export default function PreviewCenter({ selectedShot, carImage }: PreviewCenterP
   const [showGrid, setShowGrid] = useState(false)
 
   return (
-    <div className="flex-1 h-full flex flex-col" style={{ background: '#101319' }}>
+    <div
+      className="flex-1 flex flex-col overflow-hidden"
+      style={{ background: '#101319', minWidth: 0, minHeight: 0 }}
+    >
       {/* Header */}
       <div
         className="flex items-center justify-between shrink-0"
@@ -47,11 +50,15 @@ export default function PreviewCenter({ selectedShot, carImage }: PreviewCenterP
         </button>
       </div>
 
-      {/* Preview Viewport */}
-      <div className="flex-1 flex items-center justify-center" style={{ padding: 24 }}>
+      {/* Preview Viewport — constrained to available space */}
+      <div
+        className="flex-1 flex items-center justify-center overflow-hidden"
+        style={{ padding: 24, minHeight: 0 }}
+      >
         <div
-          className="relative w-full overflow-hidden"
+          className="relative overflow-hidden"
           style={{
+            width: '100%',
             maxHeight: '100%',
             aspectRatio: '16 / 9',
             borderRadius: 16,
@@ -60,7 +67,7 @@ export default function PreviewCenter({ selectedShot, carImage }: PreviewCenterP
             border: '0.8px solid rgba(255, 255, 255, 0.10)',
           }}
         >
-          {/* Car image with slow animation */}
+          {/* Car image */}
           <img
             src={carImage}
             alt="Preview"
@@ -74,7 +81,6 @@ export default function PreviewCenter({ selectedShot, carImage }: PreviewCenterP
           {/* Grid overlay */}
           {showGrid && (
             <div className="absolute inset-0 pointer-events-none">
-              {/* Rule of thirds lines */}
               <div className="absolute" style={{ left: '33.33%', top: 0, bottom: 0, width: 1, background: 'rgba(10, 130, 223, 0.25)' }} />
               <div className="absolute" style={{ left: '66.66%', top: 0, bottom: 0, width: 1, background: 'rgba(10, 130, 223, 0.25)' }} />
               <div className="absolute" style={{ top: '33.33%', left: 0, right: 0, height: 1, background: 'rgba(10, 130, 223, 0.25)' }} />
@@ -85,34 +91,10 @@ export default function PreviewCenter({ selectedShot, carImage }: PreviewCenterP
           {/* Center crosshair */}
           <div
             className="absolute pointer-events-none"
-            style={{
-              left: '50%',
-              top: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: 32,
-              height: 32,
-            }}
+            style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)', width: 32, height: 32 }}
           >
-            <div
-              className="absolute"
-              style={{
-                left: 16,
-                top: 0,
-                width: 1,
-                height: 32,
-                background: 'rgba(10, 130, 223, 0.40)',
-              }}
-            />
-            <div
-              className="absolute"
-              style={{
-                top: 16,
-                left: 0,
-                width: 32,
-                height: 1,
-                background: 'rgba(10, 130, 223, 0.40)',
-              }}
-            />
+            <div className="absolute" style={{ left: 16, top: 0, width: 1, height: 32, background: 'rgba(10, 130, 223, 0.40)' }} />
+            <div className="absolute" style={{ top: 16, left: 0, width: 32, height: 1, background: 'rgba(10, 130, 223, 0.40)' }} />
           </div>
 
           {/* Shot label overlay */}
@@ -128,14 +110,7 @@ export default function PreviewCenter({ selectedShot, carImage }: PreviewCenterP
                 border: '0.8px solid rgba(255, 255, 255, 0.10)',
               }}
             >
-              <span
-                style={{
-                  color: 'white',
-                  fontSize: 12,
-                  fontWeight: 600,
-                  lineHeight: '18px',
-                }}
-              >
+              <span style={{ color: 'white', fontSize: 12, fontWeight: 600, lineHeight: '18px' }}>
                 {selectedShot.name}
               </span>
             </div>

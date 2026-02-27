@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Play, Sparkles, Save, User } from 'lucide-react'
+import { Play, Sparkles, Save, User, LogOut, Settings, CreditCard, ChevronDown } from 'lucide-react'
 import AudiLogo from '../ui/AudiLogo'
 import ShotsPanel from './ShotsPanel'
 import type { Shot } from './ShotsPanel'
@@ -15,6 +15,9 @@ const defaultShots: Shot[] = [
   { id: '3', name: 'Dynamic Pan', duration: 4, thumbnail: `${BASE}q8.png` },
 ]
 
+const resolutionOptions = ['4K', '2K', '1080p', '720p']
+const fpsOptions = ['60fps', '30fps', '24fps']
+
 let nextShotId = 4
 
 export default function PreviewPage() {
@@ -24,11 +27,13 @@ export default function PreviewPage() {
 
   const [shots, setShots] = useState<Shot[]>(defaultShots)
   const [selectedShotId, setSelectedShotId] = useState('3')
+  const [profileOpen, setProfileOpen] = useState(false)
+  const [qualityOpen, setQualityOpen] = useState(false)
+  const [resolution, setResolution] = useState('4K')
+  const [fps, setFps] = useState('60fps')
 
   const totalDuration = shots.reduce((sum, s) => sum + s.duration, 0)
   const selectedShot = shots.find((s) => s.id === selectedShotId)
-
-  // Pick car image based on selected shot, fallback to etron
   const carImage = selectedShot?.thumbnail || `${BASE}etron.png`
 
   const handleAddShot = () => {
@@ -45,6 +50,15 @@ export default function PreviewPage() {
     setSelectedShotId(newId)
   }
 
+  const handleDeleteShot = (id: string) => {
+    const remaining = shots.filter((s) => s.id !== id)
+    if (remaining.length === 0) return
+    setShots(remaining)
+    if (selectedShotId === id) {
+      setSelectedShotId(remaining[0].id)
+    }
+  }
+
   return (
     <div
       className="flex flex-col w-screen h-screen overflow-hidden"
@@ -52,16 +66,16 @@ export default function PreviewPage() {
     >
       {/* ============ Top Header Bar ============ */}
       <header
-        className="flex items-center justify-between shrink-0"
+        className="flex items-center justify-between shrink-0 relative"
         style={{
           height: 64,
           paddingLeft: 24,
           paddingRight: 24,
           background: 'rgba(2, 2, 3, 0.80)',
           borderBottom: '0.8px solid black',
+          zIndex: 50,
         }}
       >
-        {/* Left: Logo + back */}
         <button
           onClick={() => navigate('/')}
           className="flex items-center hover:opacity-80 transition-opacity"
@@ -70,51 +84,108 @@ export default function PreviewPage() {
           <AudiLogo size={69} className="text-white" />
         </button>
 
-        {/* Center: Project name */}
         <span style={{ color: '#99A1AF', fontSize: 14, lineHeight: '21px' }}>
           {prompt ? `${prompt.slice(0, 30)}${prompt.length > 30 ? '...' : ''}.avp` : 'Untitled Project.avp'}
         </span>
 
-        {/* Right: User avatar */}
-        <div
-          className="flex items-center justify-center"
-          style={{
-            width: 36,
-            height: 36,
-            borderRadius: 9999,
-            background: 'rgba(255, 255, 255, 0.05)',
-          }}
-        >
-          <User size={16} color="#99A1AF" />
+        {/* Profile button + dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => setProfileOpen(!profileOpen)}
+            className="flex items-center justify-center transition-all hover:brightness-125"
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 9999,
+              background: 'rgba(255, 255, 255, 0.05)',
+            }}
+          >
+            <User size={16} color="#99A1AF" />
+          </button>
+
+          {profileOpen && (
+            <>
+              <div className="fixed inset-0" onClick={() => setProfileOpen(false)} />
+              <div
+                className="absolute"
+                style={{
+                  top: 44,
+                  right: 0,
+                  width: 220,
+                  background: '#1a1d24',
+                  borderRadius: 12,
+                  border: '0.8px solid rgba(255, 255, 255, 0.10)',
+                  overflow: 'hidden',
+                  zIndex: 100,
+                  boxShadow: '0 16px 48px rgba(0,0,0,0.4)',
+                }}
+              >
+                {/* User info */}
+                <div style={{ padding: '14px 16px', borderBottom: '0.8px solid rgba(255,255,255,0.05)' }}>
+                  <div style={{ color: 'white', fontSize: 14, fontWeight: 600, lineHeight: '21px' }}>
+                    Audi Designer
+                  </div>
+                  <div style={{ color: '#6A7282', fontSize: 12, lineHeight: '18px' }}>
+                    designer@audi.com
+                  </div>
+                </div>
+
+                {[
+                  { icon: Settings, label: 'Settings' },
+                  { icon: CreditCard, label: 'Billing' },
+                ].map(({ icon: Icon, label }) => (
+                  <button
+                    key={label}
+                    className="w-full flex items-center transition-colors hover:bg-white/5"
+                    style={{ padding: '10px 16px', gap: 10 }}
+                    onClick={() => setProfileOpen(false)}
+                  >
+                    <Icon size={16} color="#99A1AF" />
+                    <span style={{ color: '#99A1AF', fontSize: 14, lineHeight: '21px' }}>{label}</span>
+                  </button>
+                ))}
+
+                <div style={{ borderTop: '0.8px solid rgba(255,255,255,0.05)' }}>
+                  <button
+                    className="w-full flex items-center transition-colors hover:bg-white/5"
+                    style={{ padding: '10px 16px', gap: 10 }}
+                    onClick={() => setProfileOpen(false)}
+                  >
+                    <LogOut size={16} color="#99A1AF" />
+                    <span style={{ color: '#99A1AF', fontSize: 14, lineHeight: '21px' }}>Log Out</span>
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </header>
 
       {/* ============ Main 3-Panel Layout ============ */}
       <div className="flex flex-1 min-h-0">
-        {/* Left: Shots Panel */}
         <ShotsPanel
           shots={shots}
           selectedShotId={selectedShotId}
           onSelectShot={setSelectedShotId}
           onAddShot={handleAddShot}
+          onDeleteShot={handleDeleteShot}
         />
 
-        {/* Center: Preview Viewport */}
         <PreviewCenter selectedShot={selectedShot} carImage={carImage} />
 
-        {/* Right: Adjustments */}
         <AdjustmentsPanel />
       </div>
 
       {/* ============ Bottom Action Bar ============ */}
       <footer
-        className="flex items-center justify-between shrink-0"
+        className="flex items-center justify-between shrink-0 relative"
         style={{
           height: 80,
           paddingLeft: 24,
           paddingRight: 24,
           background: 'rgba(16, 19, 25, 0.80)',
           borderTop: '0.8px solid black',
+          zIndex: 40,
         }}
       >
         {/* Left: Duration */}
@@ -129,7 +200,6 @@ export default function PreviewPage() {
 
         {/* Center: Action Buttons */}
         <div className="flex items-center" style={{ gap: 12, maxWidth: 482 }}>
-          {/* Preview */}
           <button
             className="flex-1 flex items-center justify-center transition-all hover:brightness-110"
             style={{
@@ -142,12 +212,9 @@ export default function PreviewPage() {
             }}
           >
             <Play size={16} color="white" />
-            <span style={{ color: '#FCFCFD', fontSize: 14, lineHeight: '20px' }}>
-              Preview
-            </span>
+            <span style={{ color: '#FCFCFD', fontSize: 14, lineHeight: '20px' }}>Preview</span>
           </button>
 
-          {/* Generate */}
           <button
             className="flex-1 flex items-center justify-center transition-all hover:brightness-110"
             style={{
@@ -159,12 +226,9 @@ export default function PreviewPage() {
             }}
           >
             <Sparkles size={16} color="white" />
-            <span style={{ color: '#FCFCFD', fontSize: 14, lineHeight: '20px' }}>
-              Generate
-            </span>
+            <span style={{ color: '#FCFCFD', fontSize: 14, lineHeight: '20px' }}>Generate</span>
           </button>
 
-          {/* Save */}
           <button
             className="flex-1 flex items-center justify-center transition-all hover:brightness-110"
             style={{
@@ -177,17 +241,92 @@ export default function PreviewPage() {
             }}
           >
             <Save size={16} color="white" />
-            <span style={{ color: '#FCFCFD', fontSize: 14, lineHeight: '20px' }}>
-              Save
-            </span>
+            <span style={{ color: '#FCFCFD', fontSize: 14, lineHeight: '20px' }}>Save</span>
           </button>
         </div>
 
-        {/* Right: Quality */}
-        <div style={{ minWidth: 72 }}>
-          <span style={{ color: '#99A1AF', fontSize: 14, lineHeight: '21px' }}>
-            4K &bull; 60fps
-          </span>
+        {/* Right: Quality selector */}
+        <div className="relative">
+          <button
+            onClick={() => setQualityOpen(!qualityOpen)}
+            className="flex items-center transition-all hover:brightness-125"
+            style={{ gap: 6, minWidth: 72 }}
+          >
+            <span style={{ color: '#99A1AF', fontSize: 14, lineHeight: '21px' }}>
+              {resolution} &bull; {fps}
+            </span>
+            <ChevronDown size={12} color="#99A1AF" />
+          </button>
+
+          {qualityOpen && (
+            <>
+              <div className="fixed inset-0" onClick={() => setQualityOpen(false)} />
+              <div
+                className="absolute"
+                style={{
+                  bottom: 36,
+                  right: 0,
+                  width: 200,
+                  background: '#1a1d24',
+                  borderRadius: 12,
+                  border: '0.8px solid rgba(255, 255, 255, 0.10)',
+                  overflow: 'hidden',
+                  zIndex: 100,
+                  boxShadow: '0 16px 48px rgba(0,0,0,0.4)',
+                }}
+              >
+                {/* Resolution */}
+                <div style={{ padding: '10px 14px 6px', borderBottom: '0.8px solid rgba(255,255,255,0.05)' }}>
+                  <span style={{ color: '#99A1AF', fontSize: 11, fontWeight: 600, letterSpacing: 0.6, lineHeight: '12px' }}>
+                    RESOLUTION
+                  </span>
+                  <div className="flex flex-col" style={{ marginTop: 8 }}>
+                    {resolutionOptions.map((r) => (
+                      <button
+                        key={r}
+                        onClick={() => setResolution(r)}
+                        className="w-full text-left transition-colors hover:bg-white/5"
+                        style={{
+                          padding: '6px 8px',
+                          borderRadius: 6,
+                          color: r === resolution ? 'white' : '#6A7282',
+                          fontSize: 13,
+                          background: r === resolution ? 'rgba(255,255,255,0.05)' : 'transparent',
+                        }}
+                      >
+                        {r}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* FPS */}
+                <div style={{ padding: '10px 14px' }}>
+                  <span style={{ color: '#99A1AF', fontSize: 11, fontWeight: 600, letterSpacing: 0.6, lineHeight: '12px' }}>
+                    FRAME RATE
+                  </span>
+                  <div className="flex flex-col" style={{ marginTop: 8 }}>
+                    {fpsOptions.map((f) => (
+                      <button
+                        key={f}
+                        onClick={() => setFps(f)}
+                        className="w-full text-left transition-colors hover:bg-white/5"
+                        style={{
+                          padding: '6px 8px',
+                          borderRadius: 6,
+                          color: f === fps ? 'white' : '#6A7282',
+                          fontSize: 13,
+                          background: f === fps ? 'rgba(255,255,255,0.05)' : 'transparent',
+                        }}
+                      >
+                        {f}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </footer>
     </div>

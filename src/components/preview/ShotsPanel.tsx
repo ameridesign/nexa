@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Image, Plus, GripVertical } from 'lucide-react'
+import { Image, Plus, GripVertical, X } from 'lucide-react'
 
 export interface Shot {
   id: string
@@ -13,9 +13,10 @@ interface ShotsPanelProps {
   selectedShotId: string
   onSelectShot: (id: string) => void
   onAddShot: () => void
+  onDeleteShot: (id: string) => void
 }
 
-export default function ShotsPanel({ shots, selectedShotId, onSelectShot, onAddShot }: ShotsPanelProps) {
+export default function ShotsPanel({ shots, selectedShotId, onSelectShot, onAddShot, onDeleteShot }: ShotsPanelProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null)
 
   return (
@@ -55,12 +56,12 @@ export default function ShotsPanel({ shots, selectedShotId, onSelectShot, onAddS
           const isHovered = shot.id === hoveredId
 
           return (
-            <button
+            <div
               key={shot.id}
+              className="w-full relative transition-all cursor-pointer"
               onClick={() => onSelectShot(shot.id)}
               onMouseEnter={() => setHoveredId(shot.id)}
               onMouseLeave={() => setHoveredId(null)}
-              className="w-full relative transition-all"
               style={{
                 height: 88,
                 borderRadius: 14,
@@ -73,6 +74,27 @@ export default function ShotsPanel({ shots, selectedShotId, onSelectShot, onAddS
                 overflow: 'hidden',
               }}
             >
+              {/* Delete X */}
+              {isHovered && shots.length > 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onDeleteShot(shot.id)
+                  }}
+                  className="absolute flex items-center justify-center transition-all hover:bg-white/10"
+                  style={{
+                    top: 6,
+                    right: 6,
+                    width: 20,
+                    height: 20,
+                    borderRadius: 6,
+                    zIndex: 10,
+                  }}
+                >
+                  <X size={12} color="#99A1AF" />
+                </button>
+              )}
+
               <div
                 className="flex items-center"
                 style={{
@@ -82,7 +104,7 @@ export default function ShotsPanel({ shots, selectedShotId, onSelectShot, onAddS
                   gap: 12,
                 }}
               >
-                {/* Drag handle (visible on hover) */}
+                {/* Drag handle */}
                 <div
                   className="absolute transition-opacity"
                   style={{
@@ -140,14 +162,14 @@ export default function ShotsPanel({ shots, selectedShotId, onSelectShot, onAddS
                   </span>
                 </div>
               </div>
-            </button>
+            </div>
           )
         })}
 
-        {/* Add Shot Button */}
+        {/* Add Shot */}
         <button
           onClick={onAddShot}
-          className="w-full flex items-center justify-center transition-all hover:brightness-125"
+          className="w-full flex items-center justify-center transition-all hover:brightness-125 shrink-0"
           style={{
             height: 88,
             borderRadius: 14,
