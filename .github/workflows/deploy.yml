@@ -3,6 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main, claude/audi-ai-frontend-BtKtF]
+  workflow_dispatch:
 
 permissions:
   contents: read

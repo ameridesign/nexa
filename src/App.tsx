@@ -19,7 +19,7 @@ function App() {
   const conversationList = conversations.map((c) => ({ id: c.id, title: c.title }))
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/nexa/">
       <Layout
         onNewChat={createNewChat}
         conversations={conversationList}
