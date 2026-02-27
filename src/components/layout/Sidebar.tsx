@@ -20,7 +20,7 @@ const demoChatHistory: ChatHistoryItem[] = [
     variant: 'quattro Performance',
     promptPreview: 'Create a dramatic sunset reveal with dynamic camera movements',
     timeAgo: '2 hours ago',
-    thumbnail: `${BASE}thumb-etron-gt.svg`,
+    thumbnail: `${BASE}etron.png`,
   },
   {
     id: '2',
@@ -28,7 +28,7 @@ const demoChatHistory: ChatHistoryItem[] = [
     variant: 'Carbon Edition',
     promptPreview: 'Fast-paced urban night drive with',
     timeAgo: 'Yesterday',
-    thumbnail: `${BASE}thumb-rs-etron.svg`,
+    thumbnail: `${BASE}rsetron.png`,
   },
   {
     id: '3',
@@ -36,7 +36,7 @@ const demoChatHistory: ChatHistoryItem[] = [
     variant: '55 quattro',
     promptPreview: 'Elegant showcase in modern archi',
     timeAgo: '3 days ago',
-    thumbnail: `${BASE}thumb-q8-etron.svg`,
+    thumbnail: `${BASE}q8.png`,
   },
   {
     id: '4',
@@ -44,7 +44,7 @@ const demoChatHistory: ChatHistoryItem[] = [
     variant: 'Performance',
     promptPreview: 'Mountain road adventure at gold',
     timeAgo: '1 week ago',
-    thumbnail: `${BASE}thumb-rs7.svg`,
+    thumbnail: `${BASE}rs7.png`,
   },
 ]
 
