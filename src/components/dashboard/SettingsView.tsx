@@ -21,24 +21,24 @@ export default function SettingsView() {
   const [temperature, setTemperature] = useState(0.7)
 
   return (
-    <div className="h-full overflow-y-auto bg-audi-dark">
+    <div className="h-full overflow-y-auto bg-black">
       <div className="max-w-3xl mx-auto px-6 py-8">
         {/* Header */}
         <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 rounded-xl bg-audi-card border border-audi-border flex items-center justify-center">
-            <Settings size={18} className="text-audi-gray-300" />
+          <div className="w-10 h-10 rounded-xl bg-surface-card border border-border-default flex items-center justify-center">
+            <Settings size={18} className="text-text-tertiary" />
           </div>
           <div>
             <h1 className="text-xl font-semibold text-white">Settings</h1>
-            <p className="text-xs text-audi-gray-500">Configure your AI experience</p>
+            <p className="text-xs text-text-muted">Configure your AI experience</p>
           </div>
         </div>
 
         {/* Model Selection */}
         <section className="mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <Cpu size={14} className="text-audi-gray-400" />
-            <h2 className="text-sm font-medium text-audi-gray-300 uppercase tracking-wider">
+            <Cpu size={14} className="text-text-muted" />
+            <h2 className="text-sm font-medium text-text-tertiary uppercase tracking-wider">
               AI Model
             </h2>
           </div>
@@ -49,25 +49,25 @@ export default function SettingsView() {
                 onClick={() => setActiveModel(model.id)}
                 className={`w-full flex items-center justify-between p-4 rounded-xl border transition-colors ${
                   activeModel === model.id
-                    ? 'bg-audi-card border-audi-red/30 ring-1 ring-audi-red/20'
-                    : 'bg-audi-card border-audi-border hover:border-audi-gray-700'
+                    ? 'bg-surface-card border-btn-active/30 ring-1 ring-btn-active/20'
+                    : 'bg-surface-card border-border-default hover:border-[rgba(255,255,255,0.2)]'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div
                     className={`w-3 h-3 rounded-full border-2 ${
                       activeModel === model.id
-                        ? 'border-audi-red bg-audi-red'
-                        : 'border-audi-gray-600'
+                        ? 'border-btn-active bg-btn-active'
+                        : 'border-text-dim'
                     }`}
                   />
                   <div className="text-left">
                     <p className="text-sm text-white">{model.name}</p>
-                    <p className="text-[10px] text-audi-gray-500">{model.description}</p>
+                    <p className="text-[10px] text-text-muted">{model.description}</p>
                   </div>
                 </div>
                 {activeModel === model.id && (
-                  <span className="px-2 py-0.5 rounded-full bg-audi-red/10 text-[10px] text-audi-red uppercase tracking-wider">
+                  <span className="px-2 py-0.5 rounded-full bg-btn-active/10 text-[10px] text-btn-active uppercase tracking-wider">
                     Active
                   </span>
                 )}
@@ -80,14 +80,14 @@ export default function SettingsView() {
         <section className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <Palette size={14} className="text-audi-gray-400" />
-              <h2 className="text-sm font-medium text-audi-gray-300 uppercase tracking-wider">
+              <Palette size={14} className="text-text-muted" />
+              <h2 className="text-sm font-medium text-text-tertiary uppercase tracking-wider">
                 Creativity (Temperature)
               </h2>
             </div>
             <span className="text-sm text-white font-mono">{temperature.toFixed(1)}</span>
           </div>
-          <div className="p-4 rounded-xl bg-audi-card border border-audi-border">
+          <div className="p-4 rounded-xl bg-surface-card border border-border-default">
             <input
               type="range"
               min="0"
@@ -95,19 +95,19 @@ export default function SettingsView() {
               step="0.1"
               value={temperature}
               onChange={(e) => setTemperature(parseFloat(e.target.value))}
-              className="w-full accent-audi-red"
+              className="w-full accent-btn-active"
             />
             <div className="flex justify-between mt-2">
-              <span className="text-[10px] text-audi-gray-500">Precise</span>
-              <span className="text-[10px] text-audi-gray-500">Balanced</span>
-              <span className="text-[10px] text-audi-gray-500">Creative</span>
+              <span className="text-[10px] text-text-muted">Precise</span>
+              <span className="text-[10px] text-text-muted">Balanced</span>
+              <span className="text-[10px] text-text-muted">Creative</span>
             </div>
           </div>
         </section>
 
         {/* Other Settings */}
         <section>
-          <h2 className="text-sm font-medium text-audi-gray-300 uppercase tracking-wider mb-4">
+          <h2 className="text-sm font-medium text-text-tertiary uppercase tracking-wider mb-4">
             Preferences
           </h2>
           <div className="space-y-1">
@@ -118,16 +118,16 @@ export default function SettingsView() {
             ].map((item) => (
               <button
                 key={item.label}
-                className="w-full flex items-center justify-between p-4 rounded-xl bg-audi-card border border-audi-border hover:border-audi-gray-700 transition-colors"
+                className="w-full flex items-center justify-between p-4 rounded-xl bg-surface-card border border-border-default hover:border-[rgba(255,255,255,0.2)] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <item.icon size={16} className="text-audi-gray-400" />
+                  <item.icon size={16} className="text-text-muted" />
                   <div className="text-left">
                     <p className="text-sm text-white">{item.label}</p>
-                    <p className="text-[10px] text-audi-gray-500">{item.description}</p>
+                    <p className="text-[10px] text-text-muted">{item.description}</p>
                   </div>
                 </div>
-                <ChevronRight size={14} className="text-audi-gray-600" />
+                <ChevronRight size={14} className="text-text-dim" />
               </button>
             ))}
           </div>

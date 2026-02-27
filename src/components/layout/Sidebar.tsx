@@ -1,17 +1,51 @@
 import { useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import {
-  LayoutDashboard,
-  MessageSquare,
-  Settings,
-  ChevronLeft,
-  ChevronRight,
-  Plus,
-  History,
-  Sparkles,
-  User,
-} from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { ChevronLeft } from 'lucide-react'
 import AudiLogo from '../ui/AudiLogo'
+
+interface ChatHistoryItem {
+  id: string
+  carName: string
+  variant: string
+  promptPreview: string
+  timeAgo: string
+  thumbnailGradient: string
+}
+
+const demoChatHistory: ChatHistoryItem[] = [
+  {
+    id: '1',
+    carName: 'Audi e-tron GT',
+    variant: 'quattro Performance',
+    promptPreview: 'Create a dramatic sunset reveal with dynamic camera movements',
+    timeAgo: '2 hours ago',
+    thumbnailGradient: 'from-[#0A1929] to-black',
+  },
+  {
+    id: '2',
+    carName: 'Audi RS e-tron GT',
+    variant: 'Carbon Edition',
+    promptPreview: 'Fast-paced urban night drive with',
+    timeAgo: 'Yesterday',
+    thumbnailGradient: 'from-[#1A0A29] to-black',
+  },
+  {
+    id: '3',
+    carName: 'Audi Q8 e-tron',
+    variant: '55 quattro',
+    promptPreview: 'Elegant showcase in modern archi',
+    timeAgo: '3 days ago',
+    thumbnailGradient: 'from-[#0A2919] to-black',
+  },
+  {
+    id: '4',
+    carName: 'Audi RS7',
+    variant: 'Performance',
+    promptPreview: 'Mountain road adventure at gold',
+    timeAgo: '1 week ago',
+    thumbnailGradient: 'from-[#29190A] to-black',
+  },
+]
 
 interface SidebarProps {
   onNewChat: () => void
@@ -20,145 +54,101 @@ interface SidebarProps {
   onSelectConversation: (id: string) => void
 }
 
-const navItems = [
-  { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
-  { path: '/chat', icon: MessageSquare, label: 'Chat' },
-  { path: '/settings', icon: Settings, label: 'Settings' },
-]
-
 export default function Sidebar({
-  onNewChat,
-  conversations,
-  activeConversationId,
   onSelectConversation,
 }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
   const navigate = useNavigate()
-  const location = useLocation()
 
-  return (
-    <aside
-      className={`h-full bg-audi-sidebar border-r border-audi-border flex flex-col transition-all duration-300 ${
-        collapsed ? 'w-[68px]' : 'w-[280px]'
-      }`}
-    >
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-audi-border">
-        <div className={`flex items-center gap-3 ${collapsed ? 'justify-center w-full' : ''}`}>
-          <AudiLogo size={collapsed ? 36 : 80} className="text-white shrink-0" />
-          {!collapsed && (
-            <div>
-              <h1 className="text-sm font-semibold text-white tracking-wide">Audi AI</h1>
-              <p className="text-[10px] text-audi-gray-500 tracking-wider uppercase">Platform</p>
-            </div>
-          )}
+  if (collapsed) {
+    return (
+      <aside className="h-full w-[68px] bg-[rgba(0,0,0,0.80)] border-r border-black flex flex-col transition-all duration-300">
+        <div className="flex items-center justify-center p-4 h-[80px] border-b border-border-subtle">
+          <AudiLogo size={36} className="text-white" />
         </div>
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className={`text-audi-gray-500 hover:text-white transition-colors ${
-            collapsed ? 'hidden' : ''
-          }`}
-        >
-          <ChevronLeft size={16} />
-        </button>
-      </div>
-
-      {/* New Chat Button */}
-      <div className="p-3">
-        <button
-          onClick={() => {
-            onNewChat()
-            navigate('/chat')
-          }}
-          className={`w-full flex items-center gap-2 px-3 py-2.5 rounded-lg bg-audi-red hover:bg-audi-red-light text-white text-sm font-medium transition-colors ${
-            collapsed ? 'justify-center' : ''
-          }`}
-        >
-          <Plus size={16} />
-          {!collapsed && <span>New Chat</span>}
-        </button>
-      </div>
-
-      {/* Navigation */}
-      <nav className="px-3 space-y-1">
-        {navItems.map((item) => {
-          const isActive = location.pathname === item.path
-          return (
-            <button
-              key={item.path}
-              onClick={() => navigate(item.path)}
-              className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                collapsed ? 'justify-center' : ''
-              } ${
-                isActive
-                  ? 'bg-audi-card text-white'
-                  : 'text-audi-gray-400 hover:text-white hover:bg-audi-card/50'
-              }`}
-            >
-              <item.icon size={18} />
-              {!collapsed && <span>{item.label}</span>}
-            </button>
-          )
-        })}
-      </nav>
-
-      {/* Chat History */}
-      {!collapsed && conversations.length > 0 && (
-        <div className="flex-1 overflow-y-auto px-3 mt-4">
-          <div className="flex items-center gap-2 px-3 py-2 text-xs text-audi-gray-500 uppercase tracking-wider">
-            <History size={12} />
-            <span>Recent Chats</span>
-          </div>
-          <div className="space-y-0.5">
-            {conversations.map((conv) => (
-              <button
-                key={conv.id}
-                onClick={() => {
-                  onSelectConversation(conv.id)
-                  navigate('/chat')
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm truncate transition-colors ${
-                  activeConversationId === conv.id
-                    ? 'bg-audi-card text-white'
-                    : 'text-audi-gray-400 hover:text-white hover:bg-audi-card/50'
-                }`}
-              >
-                {conv.title}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Expand button when collapsed */}
-      {collapsed && (
-        <div className="flex-1 flex items-end justify-center pb-4">
+        <div className="flex-1" />
+        <div className="flex items-center justify-center pb-4">
           <button
             onClick={() => setCollapsed(false)}
-            className="text-audi-gray-500 hover:text-white transition-colors"
+            className="text-text-tertiary hover:text-white transition-colors"
           >
-            <ChevronRight size={16} />
+            <ChevronLeft size={16} className="rotate-180" />
           </button>
         </div>
-      )}
+      </aside>
+    )
+  }
 
-      {/* Footer */}
-      {!collapsed && (
-        <div className="p-3 border-t border-audi-border">
-          <div className="flex items-center gap-3 px-3 py-2">
-            <div className="w-8 h-8 rounded-full bg-audi-card flex items-center justify-center">
-              <User size={14} className="text-audi-gray-400" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm text-white truncate">Audi Engineer</p>
-              <div className="flex items-center gap-1">
-                <Sparkles size={10} className="text-audi-red" />
-                <p className="text-[10px] text-audi-gray-500">Pro Access</p>
-              </div>
-            </div>
+  return (
+    <aside className="h-full w-[319px] bg-[rgba(0,0,0,0.80)] border-r border-black flex flex-col transition-all duration-300">
+      {/* Header - Audi Logo + Collapse */}
+      <div className="flex items-center justify-between px-6 pt-6 pb-[0.8px] h-[80px] border-b border-border-subtle">
+        <AudiLogo size={69} className="text-white" />
+        <button
+          onClick={() => setCollapsed(true)}
+          className="w-8 h-8 rounded-[10px] flex items-center justify-center"
+        >
+          <div className="px-1.5 flex items-center">
+            <ChevronLeft size={16} className="text-text-tertiary" />
           </div>
+        </button>
+      </div>
+
+      {/* Chat List */}
+      <div className="flex-1 pt-4 px-4 overflow-y-auto flex flex-col">
+        <div className="text-text-secondary text-base font-normal leading-[25.6px] h-[34px]">
+          Chats
         </div>
-      )}
+        <div className="flex-1 flex flex-col gap-3">
+          {demoChatHistory.map((chat) => (
+            <button
+              key={chat.id}
+              onClick={() => {
+                onSelectConversation(chat.id)
+                navigate('/chat')
+              }}
+              className="w-full p-[13px] bg-surface-card rounded-[14px] border border-border-subtle flex flex-col gap-2 text-left hover:bg-[rgba(255,255,255,0.08)] transition-colors"
+            >
+              {/* Thumbnail + Info Row */}
+              <div className="flex gap-3 h-16">
+                {/* Thumbnail */}
+                <div
+                  className={`w-20 h-16 rounded-[10px] bg-gradient-to-b ${chat.thumbnailGradient} overflow-hidden shrink-0 relative`}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.4)] to-transparent" />
+                </div>
+                {/* Text Info */}
+                <div className="flex-1 flex flex-col gap-0.5 overflow-hidden">
+                  <span className="text-white text-sm font-normal font-[family-name:var(--font-family-display)] truncate">
+                    {chat.carName}
+                  </span>
+                  <span className="text-text-muted text-xs font-normal font-[family-name:var(--font-family-display)] truncate">
+                    {chat.variant}
+                  </span>
+                  <span className="text-text-muted text-xs font-normal font-[family-name:var(--font-family-display)] truncate">
+                    {chat.promptPreview}
+                  </span>
+                </div>
+              </div>
+              {/* Timestamp Row */}
+              <div className="flex items-center justify-between">
+                <span className="text-text-muted text-[11px] font-normal font-[family-name:var(--font-family-display)]">
+                  {chat.timeAgo}
+                </span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer - Clear History */}
+      <div className="px-4 pt-[16.8px] pb-4 border-t border-border-subtle">
+        <button className="w-full h-[42.6px] bg-surface-card rounded-[10px] border border-border-default flex items-center justify-center hover:bg-[rgba(255,255,255,0.08)] transition-colors">
+          <span className="text-text-tertiary text-sm font-medium">
+            Clear History
+          </span>
+        </button>
+      </div>
     </aside>
   )
 }

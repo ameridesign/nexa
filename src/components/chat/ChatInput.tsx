@@ -31,10 +31,10 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
   }
 
   return (
-    <div className="border-t border-audi-border bg-audi-dark/80 backdrop-blur-sm p-4">
+    <div className="border-t border-border-subtle bg-black/80 backdrop-blur-sm p-4">
       <div className="max-w-3xl mx-auto">
-        <div className="flex items-end gap-2 bg-audi-input border border-audi-border rounded-2xl px-4 py-3 focus-within:border-audi-gray-700 transition-colors">
-          <button className="text-audi-gray-500 hover:text-audi-gray-300 transition-colors pb-0.5">
+        <div className="flex items-end gap-2 bg-surface-input border border-border-default rounded-2xl px-4 py-3 focus-within:border-[rgba(255,255,255,0.2)] transition-colors">
+          <button className="text-text-muted hover:text-text-tertiary transition-colors pb-0.5">
             <Paperclip size={18} />
           </button>
           <textarea
@@ -45,9 +45,9 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
             placeholder="Message Audi AI..."
             disabled={disabled}
             rows={1}
-            className="flex-1 bg-transparent text-sm text-white placeholder:text-audi-gray-600 outline-none resize-none max-h-40"
+            className="flex-1 bg-transparent text-sm text-white placeholder:text-text-dim outline-none resize-none max-h-40"
           />
-          <button className="text-audi-gray-500 hover:text-audi-gray-300 transition-colors pb-0.5">
+          <button className="text-text-muted hover:text-text-tertiary transition-colors pb-0.5">
             <Mic size={18} />
           </button>
           <button
@@ -55,14 +55,14 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
             disabled={!input.trim() || disabled}
             className={`p-1.5 rounded-lg transition-colors ${
               input.trim() && !disabled
-                ? 'bg-audi-red hover:bg-audi-red-light text-white'
-                : 'bg-audi-card text-audi-gray-600'
+                ? 'bg-btn-active hover:bg-[#D4123A] text-white'
+                : 'bg-surface-card text-text-dim'
             }`}
           >
             <Send size={14} />
           </button>
         </div>
-        <p className="text-center text-[10px] text-audi-gray-600 mt-2">
+        <p className="text-center text-[10px] text-text-dim mt-2">
           Audi AI can make mistakes. Please verify important information.
         </p>
       </div>

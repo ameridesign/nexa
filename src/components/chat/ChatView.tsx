@@ -20,23 +20,23 @@ export default function ChatView({ messages, onSendMessage, isLoading }: ChatVie
   }, [messages])
 
   return (
-    <div className="flex flex-col h-full bg-audi-dark">
+    <div className="flex flex-col h-full bg-black">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-audi-border">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-border-subtle">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-audi-card border border-audi-border flex items-center justify-center">
-            <Bot size={16} className="text-audi-gray-300" />
+          <div className="w-8 h-8 rounded-full bg-surface-card border border-border-default flex items-center justify-center">
+            <Bot size={16} className="text-text-tertiary" />
           </div>
           <div>
             <h2 className="text-sm font-medium text-white">Audi AI Assistant</h2>
             <div className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-              <span className="text-[10px] text-audi-gray-500">Online</span>
+              <span className="text-[10px] text-text-muted">Online</span>
             </div>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className="px-2.5 py-1 rounded-full bg-audi-card border border-audi-border text-[10px] text-audi-gray-400 uppercase tracking-wider">
+          <span className="px-2.5 py-1 rounded-full bg-surface-card border border-border-default text-[10px] text-text-muted uppercase tracking-wider">
             GPT-4 Turbo
           </span>
         </div>
@@ -65,11 +65,11 @@ export default function ChatView({ messages, onSendMessage, isLoading }: ChatVie
 function EmptyState() {
   return (
     <div className="h-full flex flex-col items-center justify-center text-center px-4">
-      <div className="w-16 h-16 rounded-2xl bg-audi-card border border-audi-border flex items-center justify-center mb-6">
-        <Bot size={28} className="text-audi-gray-400" />
+      <div className="w-16 h-16 rounded-2xl bg-surface-card border border-border-default flex items-center justify-center mb-6">
+        <Bot size={28} className="text-text-muted" />
       </div>
       <h3 className="text-lg font-medium text-white mb-2">How can I help you today?</h3>
-      <p className="text-sm text-audi-gray-500 max-w-md">
+      <p className="text-sm text-text-muted max-w-md">
         Ask me anything about Audi vehicles, technology, engineering, or let me help you with
         analysis and creative tasks.
       </p>
@@ -82,7 +82,7 @@ function EmptyState() {
         ].map((prompt) => (
           <button
             key={prompt}
-            className="text-left p-3 rounded-xl bg-audi-card border border-audi-border text-xs text-audi-gray-300 hover:bg-audi-card-hover hover:border-audi-gray-700 transition-colors"
+            className="text-left p-3 rounded-xl bg-surface-card border border-border-default text-xs text-text-tertiary hover:bg-[rgba(255,255,255,0.08)] transition-colors"
           >
             {prompt}
           </button>
@@ -95,14 +95,14 @@ function EmptyState() {
 function TypingIndicator() {
   return (
     <div className="flex gap-3">
-      <div className="w-8 h-8 rounded-full bg-audi-card border border-audi-border flex items-center justify-center shrink-0">
-        <Bot size={14} className="text-audi-gray-300" />
+      <div className="w-8 h-8 rounded-full bg-surface-card border border-border-default flex items-center justify-center shrink-0">
+        <Bot size={14} className="text-text-tertiary" />
       </div>
-      <div className="bg-audi-card border border-audi-border rounded-2xl rounded-bl-md px-4 py-3">
+      <div className="bg-surface-card border border-border-default rounded-2xl rounded-bl-md px-4 py-3">
         <div className="flex gap-1">
-          <span className="w-1.5 h-1.5 rounded-full bg-audi-gray-500 animate-bounce [animation-delay:0ms]" />
-          <span className="w-1.5 h-1.5 rounded-full bg-audi-gray-500 animate-bounce [animation-delay:150ms]" />
-          <span className="w-1.5 h-1.5 rounded-full bg-audi-gray-500 animate-bounce [animation-delay:300ms]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-text-muted animate-bounce [animation-delay:0ms]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-text-muted animate-bounce [animation-delay:150ms]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-text-muted animate-bounce [animation-delay:300ms]" />
         </div>
       </div>
     </div>

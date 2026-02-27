@@ -17,7 +17,7 @@ export default function Layout({
   onSelectConversation,
 }: LayoutProps) {
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-audi-black">
+    <div className="flex h-screen w-screen overflow-hidden bg-azure-8">
       <Sidebar
         onNewChat={onNewChat}
         conversations={conversations}
