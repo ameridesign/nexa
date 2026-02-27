@@ -21,107 +21,158 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="h-full w-full bg-black flex items-center justify-center overflow-y-auto">
-      <div className="w-full max-w-[804px] px-6 flex flex-col gap-12">
+    <div className="h-full w-full bg-black flex items-center justify-center">
+      <div style={{ width: '100%', maxWidth: 804, padding: '0 32px' }}>
 
         {/* Title */}
-        <h1 className="text-[48px] font-bold font-[family-name:var(--font-family-display)] leading-[1.2] text-center bg-gradient-to-r from-white via-white/90 to-white/60 bg-clip-text text-transparent">
+        <h1
+          className="bg-gradient-to-r from-white via-white/90 to-white/60 bg-clip-text text-transparent"
+          style={{
+            fontSize: 48,
+            fontWeight: 700,
+            fontFamily: 'var(--font-family-display)',
+            lineHeight: '57.6px',
+            textAlign: 'center',
+            marginBottom: 48,
+          }}
+        >
           Create Your Audi Story
         </h1>
 
-        {/* Main Content */}
-        <div className="flex flex-col">
-
-          {/* Vehicle Selector */}
-          <div
-            className="w-[369px] h-[57px] rounded-[14px] border border-[rgba(255,255,255,0.10)] flex items-center gap-3 mb-4"
-            style={{ background: '#101319' }}
-          >
-            {/* Search icon */}
-            <div className="pl-[17px] flex items-center">
-              <Search size={16} className="text-[#657081]" />
-            </div>
-            {/* Vehicle info */}
-            <div className="flex-1 flex flex-col py-[9px]">
-              <span className="text-white text-[14px] font-semibold leading-[21px]">
-                Audi A6 e-tron
-              </span>
-              <span className="text-[#99A1AF] text-[12px] font-normal leading-[18px]">
-                Sportback • WAUZZZ8V5KA123456
-              </span>
-            </div>
-            {/* Chevron */}
-            <div className="pr-[17px] flex items-center">
-              <ChevronDown size={12} className="text-[#99A1AF]" />
-            </div>
+        {/* Vehicle Selector */}
+        <div
+          className="flex items-center"
+          style={{
+            width: 369,
+            height: 57,
+            borderRadius: 14,
+            border: '1px solid rgba(255, 255, 255, 0.10)',
+            background: '#101319',
+            marginBottom: 16,
+          }}
+        >
+          <div style={{ paddingLeft: 17, display: 'flex', alignItems: 'center' }}>
+            <Search size={16} color="#657081" />
           </div>
-
-          {/* Prompt Textarea Area */}
-          <div
-            className="w-full rounded-[16px] border border-[rgba(255,255,255,0.10)] overflow-hidden"
-            style={{ background: '#181D25' }}
-          >
-            {/* Textarea */}
-            <div className="px-6 pt-5 pb-5" style={{ background: 'rgba(38, 38, 38, 0.30)' }}>
-              <textarea
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                placeholder="Describe your video... e.g., 'Create a cinematic reveal at sunset with dramatic camera movements showcasing the car's sleek design and performance features'"
-                className="w-full h-[140px] bg-transparent text-white text-[16px] font-normal font-[family-name:var(--font-family-display)] placeholder:text-[#A1A1A1] outline-none resize-none leading-relaxed"
-              />
-            </div>
-
-            {/* Bottom bar */}
-            <div className="flex items-center justify-between px-6 h-[75px] border-t border-[rgba(255,255,255,0.05)]">
-              {/* Left info */}
-              <div className="flex items-center gap-3 text-[14px]">
-                <span className="text-[#6A7282] font-normal">
-                  {prompt.length} characters
-                </span>
-                <span className="text-[rgba(255,255,255,0.20)]">•</span>
-                <div className="flex items-center gap-2.5">
-                  <span className="text-[#657081] font-normal">VIN attached</span>
-                  <CheckCircle size={16} className="text-[#657081]" />
-                </div>
-              </div>
-
-              {/* Generate button */}
-              <button
-                onClick={handleGenerate}
-                disabled={!prompt.trim()}
-                className="min-h-[48px] px-6 py-[14px] rounded-[999px] flex items-center justify-center transition-colors"
-                style={{
-                  background: prompt.trim() ? '#BB0A30' : '#657081',
-                }}
-              >
-                <span className="text-[#FCFCFD] text-[14px] font-normal leading-[20px]">
-                  Generate
-                </span>
-              </button>
-            </div>
-          </div>
-
-          {/* Example Prompts */}
-          <div className="mt-6 flex flex-col gap-3">
-            <span className="text-[#6A7282] text-[14px] font-medium leading-[21px]">
-              Try these examples:
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '9px 0', marginLeft: 12 }}>
+            <span style={{ color: '#fff', fontSize: 14, fontWeight: 600, lineHeight: '21px' }}>
+              Audi A6 e-tron
             </span>
-            <div className="flex flex-wrap gap-2">
-              {examplePrompts.map((example) => (
-                <button
-                  key={example}
-                  onClick={() => handleExampleClick(example)}
-                  className="h-[37px] px-[17px] rounded-[10px] border border-[rgba(255,255,255,0.10)] flex items-center transition-colors hover:bg-[rgba(255,255,255,0.08)]"
-                  style={{ background: 'rgba(255, 255, 255, 0.05)' }}
-                >
-                  <span className="text-[#99A1AF] text-[13px] font-normal leading-[19.5px]">
-                    {example}
-                  </span>
-                </button>
-              ))}
-            </div>
+            <span style={{ color: '#99A1AF', fontSize: 12, lineHeight: '18px' }}>
+              Sportback • WAUZZZ8V5KA123456
+            </span>
+          </div>
+          <div style={{ paddingRight: 17, display: 'flex', alignItems: 'center' }}>
+            <ChevronDown size={12} color="#99A1AF" />
           </div>
         </div>
+
+        {/* Prompt Textarea Container */}
+        <div
+          style={{
+            width: '100%',
+            borderRadius: 16,
+            border: '0.8px solid rgba(255, 255, 255, 0.10)',
+            background: '#181D25',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Textarea */}
+          <div style={{ padding: '20px 24px', background: 'rgba(38, 38, 38, 0.30)' }}>
+            <textarea
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder="Describe your video... e.g., 'Create a cinematic reveal at sunset with dramatic camera movements showcasing the car's sleek design and performance features'"
+              style={{
+                width: '100%',
+                height: 140,
+                background: 'transparent',
+                color: '#fff',
+                fontSize: 16,
+                fontFamily: 'var(--font-family-display)',
+                lineHeight: '24px',
+                border: 'none',
+                outline: 'none',
+                resize: 'none',
+              }}
+            />
+          </div>
+
+          {/* Bottom bar */}
+          <div
+            className="flex items-center justify-between"
+            style={{
+              height: 75,
+              padding: '0 24px',
+              borderTop: '0.8px solid rgba(255, 255, 255, 0.05)',
+            }}
+          >
+            {/* Left info */}
+            <div className="flex items-center" style={{ gap: 12, fontSize: 14 }}>
+              <span style={{ color: '#6A7282' }}>
+                {prompt.length} characters
+              </span>
+              <span style={{ color: 'rgba(255, 255, 255, 0.20)' }}>•</span>
+              <div className="flex items-center" style={{ gap: 10 }}>
+                <span style={{ color: '#657081' }}>VIN attached</span>
+                <CheckCircle size={16} color="#657081" />
+              </div>
+            </div>
+
+            {/* Generate button */}
+            <button
+              onClick={handleGenerate}
+              disabled={!prompt.trim()}
+              className="transition-opacity hover:opacity-90"
+              style={{
+                minHeight: 48,
+                padding: '14px 24px',
+                borderRadius: 999,
+                background: prompt.trim() ? '#BB0A30' : '#657081',
+                border: 'none',
+                cursor: prompt.trim() ? 'pointer' : 'not-allowed',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <span style={{ color: '#FCFCFD', fontSize: 14, lineHeight: '20px' }}>
+                Generate
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* Example Prompts */}
+        <div style={{ marginTop: 24 }}>
+          <div style={{ color: '#6A7282', fontSize: 14, fontWeight: 500, lineHeight: '21px', marginBottom: 12 }}>
+            Try these examples:
+          </div>
+          <div className="flex flex-wrap" style={{ gap: 8 }}>
+            {examplePrompts.map((example) => (
+              <button
+                key={example}
+                onClick={() => handleExampleClick(example)}
+                className="transition-all hover:brightness-125"
+                style={{
+                  height: 37,
+                  padding: '0 17px',
+                  borderRadius: 10,
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '0.8px solid rgba(255, 255, 255, 0.10)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <span style={{ color: '#99A1AF', fontSize: 13, lineHeight: '19.5px' }}>
+                  {example}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
       </div>
     </div>
   )

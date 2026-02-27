@@ -51,12 +51,15 @@ export default function Sidebar() {
 
   if (collapsed) {
     return (
-      <aside className="h-full w-[68px] flex flex-col shrink-0 border-r border-black transition-all duration-300" style={{ background: 'rgba(0, 0, 0, 0.80)' }}>
-        <div className="flex items-center justify-center h-[81px] border-b border-[rgba(255,255,255,0.05)]">
+      <aside
+        className="h-full flex flex-col shrink-0 border-r border-black"
+        style={{ width: 68, background: 'rgba(0, 0, 0, 0.80)' }}
+      >
+        <div className="flex items-center justify-center border-b border-[rgba(255,255,255,0.05)]" style={{ height: 80 }}>
           <AudiLogo size={36} className="text-white" />
         </div>
         <div className="flex-1" />
-        <div className="flex items-center justify-center pb-4">
+        <div className="flex items-center justify-center" style={{ paddingBottom: 16 }}>
           <button
             onClick={() => setCollapsed(false)}
             className="text-[#99A1AF] hover:text-white transition-colors"
@@ -69,71 +72,115 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="h-full w-[319px] flex flex-col shrink-0 border-r border-black transition-all duration-300" style={{ background: 'rgba(0, 0, 0, 0.80)' }}>
-
-      {/* Header — Audi Logo + Collapse */}
-      <div className="flex items-center justify-between px-6 pt-6 h-[81px] border-b border-[rgba(255,255,255,0.05)]">
+    <aside
+      className="h-full flex flex-col shrink-0 border-r border-black"
+      style={{ width: 319, background: 'rgba(0, 0, 0, 0.80)' }}
+    >
+      {/* Header */}
+      <div
+        className="flex items-center justify-between shrink-0 border-b border-[rgba(255,255,255,0.05)]"
+        style={{ height: 80, padding: '24px 24px 0 24px' }}
+      >
         <AudiLogo size={69} className="text-white" />
         <button
           onClick={() => setCollapsed(true)}
-          className="w-8 h-8 rounded-[10px] flex items-center justify-center"
+          className="flex items-center justify-center hover:opacity-80 transition-opacity"
+          style={{ width: 32, height: 32, borderRadius: 10 }}
         >
           <ChevronLeft size={16} className="text-[#99A1AF]" />
         </button>
       </div>
 
       {/* Chat History */}
-      <div className="flex-1 pt-4 px-4 overflow-y-auto flex flex-col">
-        <div className="text-[#A1A1A1] text-[16px] font-normal leading-[25.6px] mb-3">
+      <div
+        className="flex-1 overflow-y-auto flex flex-col min-h-0"
+        style={{ padding: '16px 16px 0 16px' }}
+      >
+        <div
+          className="shrink-0"
+          style={{ color: '#A1A1A1', fontSize: 16, lineHeight: '25.6px', marginBottom: 12 }}
+        >
           Chats
         </div>
-        <div className="flex flex-col gap-3">
+
+        <div className="flex flex-col" style={{ gap: 12 }}>
           {demoChatHistory.map((chat) => (
             <button
               key={chat.id}
-              className="w-full p-[13px] rounded-[14px] border border-[rgba(255,255,255,0.05)] flex flex-col gap-2 text-left hover:bg-[rgba(255,255,255,0.08)] transition-colors"
-              style={{ background: 'rgba(255, 255, 255, 0.05)' }}
+              className="w-full flex flex-col text-left hover:brightness-125 transition-all"
+              style={{
+                padding: 13,
+                borderRadius: 14,
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '0.8px solid rgba(255, 255, 255, 0.05)',
+                gap: 8,
+              }}
             >
               {/* Thumbnail + Info */}
-              <div className="flex gap-3 h-16">
+              <div className="flex" style={{ gap: 12, height: 64 }}>
                 {/* Thumbnail */}
                 <div
-                  className="w-[80px] h-[64px] rounded-[10px] overflow-hidden shrink-0 relative"
-                  style={{ background: chat.thumbnailGradient }}
+                  className="shrink-0 relative overflow-hidden"
+                  style={{
+                    width: 80,
+                    height: 64,
+                    borderRadius: 10,
+                    background: chat.thumbnailGradient,
+                  }}
                 >
-                  <div className="absolute inset-0" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0) 100%)' }} />
+                  <div
+                    className="absolute inset-0"
+                    style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.4) 0%, transparent 100%)' }}
+                  />
                 </div>
+
                 {/* Text Info */}
-                <div className="flex-1 flex flex-col gap-[2px] overflow-hidden pt-[2px]">
-                  <span className="text-white text-[14px] font-normal font-[family-name:var(--font-family-display)] truncate leading-[21px]">
+                <div className="flex-1 flex flex-col overflow-hidden" style={{ gap: 2, paddingTop: 2 }}>
+                  <span
+                    className="truncate"
+                    style={{ color: '#fff', fontSize: 14, fontFamily: 'var(--font-family-display)', lineHeight: '21px' }}
+                  >
                     {chat.carName}
                   </span>
-                  <span className="text-[#6A7282] text-[12px] font-normal font-[family-name:var(--font-family-display)] truncate">
+                  <span
+                    className="truncate"
+                    style={{ color: '#6A7282', fontSize: 12, fontFamily: 'var(--font-family-display)' }}
+                  >
                     {chat.variant}
                   </span>
-                  <span className="text-[#6A7282] text-[12px] font-normal font-[family-name:var(--font-family-display)] truncate">
+                  <span
+                    className="truncate"
+                    style={{ color: '#6A7282', fontSize: 12, fontFamily: 'var(--font-family-display)' }}
+                  >
                     {chat.promptPreview}
                   </span>
                 </div>
               </div>
+
               {/* Timestamp */}
-              <div className="flex items-center">
-                <span className="text-[#6A7282] text-[11px] font-normal font-[family-name:var(--font-family-display)]">
-                  {chat.timeAgo}
-                </span>
-              </div>
+              <span style={{ color: '#6A7282', fontSize: 11, fontFamily: 'var(--font-family-display)' }}>
+                {chat.timeAgo}
+              </span>
             </button>
           ))}
         </div>
       </div>
 
-      {/* Footer — Clear History */}
-      <div className="px-4 pt-[17px] pb-4 border-t border-[rgba(255,255,255,0.05)]">
+      {/* Footer */}
+      <div
+        className="shrink-0 border-t border-[rgba(255,255,255,0.05)]"
+        style={{ padding: '17px 16px 16px 16px' }}
+      >
         <button
-          className="w-full h-[43px] rounded-[10px] border border-[rgba(255,255,255,0.10)] flex items-center justify-center hover:bg-[rgba(255,255,255,0.08)] transition-colors"
-          style={{ background: 'rgba(255, 255, 255, 0.05)' }}
+          className="w-full flex items-center justify-center hover:brightness-125 transition-all"
+          style={{
+            height: 43,
+            borderRadius: 10,
+            background: 'rgba(255, 255, 255, 0.05)',
+            border: '0.8px solid rgba(255, 255, 255, 0.10)',
+          }}
         >
-          <span className="text-[#99A1AF] text-[14px] font-medium leading-[21px]">
+          <span style={{ color: '#99A1AF', fontSize: 14, fontWeight: 500, lineHeight: '21px' }}>
             Clear History
           </span>
         </button>
