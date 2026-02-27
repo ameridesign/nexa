@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Play, Sparkles, Save, User, LogOut, Settings, CreditCard, ChevronDown } from 'lucide-react'
 import AudiLogo from '../ui/AudiLogo'
@@ -32,10 +32,33 @@ export default function PreviewPage() {
   const [resolution, setResolution] = useState('4K')
   const [fps, setFps] = useState('60fps')
   const [showSaved, setShowSaved] = useState(false)
+  const [generating, setGenerating] = useState(false)
+  const [genProgress, setGenProgress] = useState(0)
 
   const totalDuration = shots.reduce((sum, s) => sum + s.duration, 0)
   const selectedShot = shots.find((s) => s.id === selectedShotId)
   const carImage = selectedShot?.thumbnail || `${BASE}etron.png`
+
+  const handleGenerate = () => {
+    setGenerating(true)
+    setGenProgress(0)
+  }
+
+  useEffect(() => {
+    if (!generating) return
+    const interval = setInterval(() => {
+      setGenProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval)
+          setGenerating(false)
+          navigate('/results', { state: { prompt } })
+          return 100
+        }
+        return prev + 2
+      })
+    }, 60)
+    return () => clearInterval(interval)
+  }, [generating, navigate, prompt])
 
   const handleSave = () => {
     setShowSaved(true)
@@ -222,6 +245,7 @@ export default function PreviewPage() {
           </button>
 
           <button
+            onClick={handleGenerate}
             className="flex-1 flex items-center justify-center transition-all hover:brightness-110"
             style={{
               minHeight: 48,
@@ -336,6 +360,78 @@ export default function PreviewPage() {
           )}
         </div>
       </footer>
+
+      {/* Generating modal */}
+      {generating && (
+        <div
+          className="fixed inset-0 flex items-center justify-center"
+          style={{ zIndex: 300, background: 'rgba(0, 0, 0, 0.75)' }}
+        >
+          <div
+            className="flex flex-col items-center"
+            style={{
+              width: 400,
+              padding: '48px 40px',
+              background: '#181D25',
+              borderRadius: 20,
+              border: '0.8px solid rgba(255, 255, 255, 0.10)',
+              boxShadow: '0 32px 64px rgba(0,0,0,0.5)',
+              gap: 24,
+            }}
+          >
+            {/* Spinner */}
+            <div
+              style={{
+                width: 56,
+                height: 56,
+                borderRadius: 9999,
+                border: '3px solid rgba(255,255,255,0.10)',
+                borderTopColor: '#0A82DF',
+                animation: 'spin 0.8s linear infinite',
+              }}
+            />
+
+            <div className="flex flex-col items-center" style={{ gap: 8 }}>
+              <span style={{ color: 'white', fontSize: 18, fontWeight: 600, lineHeight: '27px' }}>
+                Generating Video
+              </span>
+              <span style={{ color: '#6A7282', fontSize: 14, lineHeight: '21px', textAlign: 'center' }}>
+                Creating cinematic shots with AI...
+              </span>
+            </div>
+
+            {/* Progress bar */}
+            <div className="w-full">
+              <div
+                className="w-full overflow-hidden"
+                style={{
+                  height: 6,
+                  borderRadius: 9999,
+                  background: 'rgba(255, 255, 255, 0.10)',
+                }}
+              >
+                <div
+                  style={{
+                    width: `${genProgress}%`,
+                    height: 6,
+                    borderRadius: 9999,
+                    background: '#0A82DF',
+                    transition: 'width 0.1s linear',
+                  }}
+                />
+              </div>
+              <div className="flex items-center justify-between" style={{ marginTop: 8 }}>
+                <span style={{ color: '#6A7282', fontSize: 12, lineHeight: '18px' }}>
+                  {genProgress < 30 ? 'Analyzing shots...' : genProgress < 60 ? 'Rendering frames...' : genProgress < 90 ? 'Compositing video...' : 'Finalizing...'}
+                </span>
+                <span style={{ color: '#99A1AF', fontSize: 12, fontWeight: 600, lineHeight: '18px' }}>
+                  {genProgress}%
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Save toast */}
       {showSaved && (
