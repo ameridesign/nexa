@@ -125,17 +125,19 @@ export default function Dashboard() {
             <button
               onClick={handleGenerate}
               disabled={!prompt.trim()}
-              className="transition-opacity hover:opacity-90"
+              className="transition-all hover:brightness-110"
               style={{
                 minHeight: 48,
                 padding: '14px 24px',
                 borderRadius: 999,
-                background: prompt.trim() ? '#BB0A30' : '#657081',
+                background: prompt.trim() ? '#657081' : '#181D25',
+                boxShadow: prompt.trim() ? 'none' : '0px 0px 0px 1px #2C343F inset',
                 border: 'none',
                 cursor: prompt.trim() ? 'pointer' : 'not-allowed',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                gap: 7,
               }}
             >
               <span style={{ color: '#FCFCFD', fontSize: 14, lineHeight: '20px' }}>
