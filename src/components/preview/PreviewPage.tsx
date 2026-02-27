@@ -10,7 +10,7 @@ import AdjustmentsPanel from './AdjustmentsPanel'
 const BASE = import.meta.env.BASE_URL
 
 const defaultShots: Shot[] = [
-  { id: '1', name: 'Opening Shot', duration: 3, thumbnail: `${BASE}etron.png`, video: `${BASE}opening-shot-video.mp4` },
+  { id: '1', name: 'Opening Shot', duration: 3, thumbnail: `${BASE}opening-shot.avif`, video: `${BASE}opening-shot-video.mp4` },
   { id: '2', name: 'Close-up', duration: 2, thumbnail: `${BASE}close-up.jpg` },
   { id: '3', name: 'Dynamic Pan', duration: 4, thumbnail: `${BASE}dynamic-pan.png` },
 ]
