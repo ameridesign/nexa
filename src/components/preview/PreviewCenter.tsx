@@ -55,7 +55,7 @@ export default function PreviewCenter({ selectedShot, carImage }: PreviewCenterP
       {/* Preview Viewport */}
       <div
         className="flex items-center justify-center overflow-hidden md:flex-1"
-        style={{ padding: '12px 16px', minHeight: 0 }}
+        style={{ padding: '12px 16px 16px', minHeight: 0 }}
       >
         <div
           className="relative overflow-hidden w-full"

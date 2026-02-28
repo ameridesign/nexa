@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, CheckCircle, X, Plus, Menu } from 'lucide-react'
+import { Search, CheckCircle, X, Plus, Menu, ArrowUp } from 'lucide-react'
 import { useSidebar } from '../layout/SidebarContext'
 
 const examplePrompts = [
@@ -133,8 +133,9 @@ export default function Dashboard() {
             </button>
           )}
 
-          {/* Prompt Textarea Container */}
+          {/* Prompt Textarea Container — desktop only */}
           <div
+            className="hidden md:block"
             style={{
               width: '100%',
               borderRadius: 16,
@@ -236,6 +237,78 @@ export default function Dashboard() {
             </div>
           </div>
 
+        </div>
+      </div>
+
+      {/* Mobile bottom input bar — like Claude / ChatGPT */}
+      <div
+        className="md:hidden shrink-0"
+        style={{
+          padding: '12px 16px',
+          paddingBottom: 'max(16px, env(safe-area-inset-bottom))',
+          background: 'rgba(0, 0, 0, 0.80)',
+          backdropFilter: 'blur(16px)',
+          borderTop: '0.8px solid rgba(255, 255, 255, 0.08)',
+        }}
+      >
+        <div
+          style={{
+            borderRadius: 16,
+            border: '0.8px solid rgba(255, 255, 255, 0.12)',
+            background: '#181D25',
+            overflow: 'hidden',
+          }}
+        >
+          <textarea
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="Describe your video..."
+            className="w-full bg-transparent text-white outline-none resize-none"
+            style={{
+              padding: '14px 16px 8px',
+              minHeight: 44,
+              maxHeight: 120,
+              fontSize: 15,
+              fontFamily: 'var(--font-family-display)',
+              lineHeight: '22px',
+              background: 'rgba(38, 38, 38, 0.30)',
+            }}
+            rows={1}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault()
+                handleGenerate()
+              }
+            }}
+          />
+          <div
+            className="flex items-center justify-between"
+            style={{ padding: '8px 12px 10px' }}
+          >
+            <div className="flex items-center" style={{ gap: 8 }}>
+              <span style={{ color: '#6A7282', fontSize: 12 }}>{prompt.length} chars</span>
+              {vehicle && (
+                <div className="flex items-center" style={{ gap: 4 }}>
+                  <CheckCircle size={12} color="#657081" />
+                  <span style={{ color: '#657081', fontSize: 12 }}>VIN</span>
+                </div>
+              )}
+            </div>
+            <button
+              onClick={handleGenerate}
+              disabled={!prompt.trim()}
+              className="flex items-center justify-center transition-all"
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 999,
+                background: prompt.trim() ? '#657081' : 'rgba(255, 255, 255, 0.08)',
+                cursor: prompt.trim() ? 'pointer' : 'not-allowed',
+              }}
+            >
+              <ArrowUp size={16} color={prompt.trim() ? 'white' : '#6A7282'} />
+            </button>
+          </div>
         </div>
       </div>
 

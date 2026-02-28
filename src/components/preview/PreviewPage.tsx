@@ -138,7 +138,7 @@ export default function PreviewPage() {
         <div className="order-2 md:order-1 shrink-0 md:w-[280px]" style={{ borderRight: '0.8px solid rgba(255, 255, 255, 0.05)' }}>
           <ShotsPanel shots={shots} selectedShotId={selectedShotId} onSelectShot={setSelectedShotId} onAddShot={handleAddShot} onDeleteShot={handleDeleteShot} />
         </div>
-        <div className="order-1 md:order-2 flex-1 min-w-0 min-h-0">
+        <div className="order-1 md:order-2 shrink-0 md:shrink md:flex-1 min-w-0 min-h-0">
           <PreviewCenter selectedShot={selectedShot} carImage={carImage} />
         </div>
         <div className="order-3 shrink-0 md:w-[320px]">
