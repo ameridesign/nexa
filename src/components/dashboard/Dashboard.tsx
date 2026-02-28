@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, CheckCircle, X, Plus } from 'lucide-react'
+import { Search, CheckCircle, X, Plus, Menu } from 'lucide-react'
+import { useSidebar } from '../layout/SidebarContext'
 
 const examplePrompts = [
   'Dramatic sunset reveal with slow camera orbit',
@@ -25,6 +26,7 @@ export default function Dashboard() {
   const [vinModalOpen, setVinModalOpen] = useState(false)
   const [vinInput, setVinInput] = useState('')
   const navigate = useNavigate()
+  const { openMobile } = useSidebar()
 
   const handleGenerate = () => {
     if (!prompt.trim()) return
@@ -47,200 +49,208 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="h-full w-full bg-black flex items-center justify-center">
-      <div style={{ width: '100%', maxWidth: 804, padding: '0 32px' }}>
-
-        {/* Title */}
-        <h1
-          className="bg-gradient-to-r from-white via-white/90 to-white/60 bg-clip-text text-transparent"
-          style={{
-            fontSize: 48,
-            fontWeight: 700,
-            fontFamily: 'var(--font-family-display)',
-            lineHeight: '57.6px',
-            textAlign: 'center',
-            marginBottom: 48,
-          }}
+    <div className="h-full w-full bg-black flex flex-col">
+      {/* Mobile header with hamburger */}
+      <div className="md:hidden flex items-center shrink-0" style={{ height: 56, padding: '0 16px' }}>
+        <button
+          onClick={openMobile}
+          className="flex items-center justify-center transition-all hover:bg-white/10 active:scale-95"
+          style={{ width: 40, height: 40, borderRadius: 10 }}
         >
-          Create Your Audi Story
-        </h1>
+          <Menu size={20} color="#99A1AF" />
+        </button>
+      </div>
 
-        {/* Vehicle Selector / Add VIN */}
-        {vehicle ? (
-          <div
-            className="flex items-center"
+      {/* Main content — centered */}
+      <div className="flex-1 flex items-center justify-center overflow-y-auto">
+        <div className="w-full px-4 md:px-8 py-6 md:py-0" style={{ maxWidth: 804 }}>
+
+          {/* Title */}
+          <h1
+            className="bg-gradient-to-r from-white via-white/90 to-white/60 bg-clip-text text-transparent text-center"
             style={{
-              width: 369,
-              height: 57,
-              borderRadius: 14,
-              border: '1px solid rgba(255, 255, 255, 0.10)',
-              background: '#101319',
-              marginBottom: 16,
+              fontWeight: 700,
+              fontFamily: 'var(--font-family-display)',
+              marginBottom: 32,
             }}
           >
-            <div style={{ paddingLeft: 17, display: 'flex', alignItems: 'center' }}>
-              <Search size={16} color="#657081" />
-            </div>
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '9px 0', marginLeft: 12 }}>
-              <span style={{ color: '#fff', fontSize: 14, fontWeight: 600, lineHeight: '21px' }}>
-                {vehicle.name}
-              </span>
-              <span style={{ color: '#99A1AF', fontSize: 12, lineHeight: '18px' }}>
-                {vehicle.variant} &bull; {vehicle.vin}
-              </span>
-            </div>
-            <button
-              onClick={() => setVehicle(null)}
-              className="flex items-center justify-center transition-all hover:bg-white/5"
-              style={{ width: 32, height: 32, borderRadius: 8, marginRight: 12 }}
-            >
-              <X size={14} color="#99A1AF" />
-            </button>
-          </div>
-        ) : (
-          <button
-            onClick={() => setVinModalOpen(true)}
-            className="flex items-center transition-all hover:brightness-125"
-            style={{
-              height: 57,
-              paddingLeft: 17,
-              paddingRight: 17,
-              borderRadius: 14,
-              border: '1px dashed rgba(255, 255, 255, 0.20)',
-              background: 'rgba(255, 255, 255, 0.03)',
-              marginBottom: 16,
-              gap: 10,
-            }}
-          >
-            <Plus size={16} color="#657081" />
-            <span style={{ color: '#99A1AF', fontSize: 14, lineHeight: '21px' }}>
-              Add VIN to use your car
+            <span className="text-[32px] leading-[1.2] md:text-[48px] md:leading-[57.6px]">
+              Create Your Audi Story
             </span>
-          </button>
-        )}
+          </h1>
 
-        {/* Prompt Textarea Container */}
-        <div
-          style={{
-            width: '100%',
-            borderRadius: 16,
-            border: '0.8px solid rgba(255, 255, 255, 0.10)',
-            background: '#181D25',
-            overflow: 'hidden',
-          }}
-        >
-          <div style={{ padding: '20px 24px', background: 'rgba(38, 38, 38, 0.30)' }}>
-            <textarea
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Describe your video... e.g., 'Create a cinematic reveal at sunset with dramatic camera movements showcasing the car's sleek design and performance features'"
+          {/* Vehicle Selector / Add VIN */}
+          {vehicle ? (
+            <div
+              className="flex items-center w-full"
               style={{
-                width: '100%',
-                height: 140,
-                background: 'transparent',
-                color: '#fff',
-                fontSize: 16,
-                fontFamily: 'var(--font-family-display)',
-                lineHeight: '24px',
-                border: 'none',
-                outline: 'none',
-                resize: 'none',
-              }}
-            />
-          </div>
-
-          {/* Bottom bar */}
-          <div
-            className="flex items-center justify-between"
-            style={{
-              height: 75,
-              padding: '0 24px',
-              borderTop: '0.8px solid rgba(255, 255, 255, 0.05)',
-            }}
-          >
-            <div className="flex items-center" style={{ gap: 12, fontSize: 14 }}>
-              <span style={{ color: '#6A7282' }}>
-                {prompt.length} characters
-              </span>
-              {vehicle && (
-                <>
-                  <span style={{ color: 'rgba(255, 255, 255, 0.20)' }}>&bull;</span>
-                  <div className="flex items-center" style={{ gap: 10 }}>
-                    <span style={{ color: '#657081' }}>VIN attached</span>
-                    <CheckCircle size={16} color="#657081" />
-                  </div>
-                </>
-              )}
-            </div>
-
-            <button
-              onClick={handleGenerate}
-              disabled={!prompt.trim()}
-              className="transition-all hover:brightness-110"
-              style={{
-                minHeight: 48,
-                padding: '14px 24px',
-                borderRadius: 999,
-                background: prompt.trim() ? '#657081' : '#181D25',
-                boxShadow: prompt.trim() ? 'none' : '0px 0px 0px 1px #2C343F inset',
-                border: 'none',
-                cursor: prompt.trim() ? 'pointer' : 'not-allowed',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 7,
+                maxWidth: 369,
+                height: 57,
+                borderRadius: 14,
+                border: '1px solid rgba(255, 255, 255, 0.10)',
+                background: '#101319',
+                marginBottom: 16,
               }}
             >
-              <span style={{ color: '#FCFCFD', fontSize: 14, lineHeight: '20px' }}>
-                Generate
+              <div style={{ paddingLeft: 17, display: 'flex', alignItems: 'center' }}>
+                <Search size={16} color="#657081" />
+              </div>
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '9px 0', marginLeft: 12 }}>
+                <span style={{ color: '#fff', fontSize: 14, fontWeight: 600, lineHeight: '21px' }}>
+                  {vehicle.name}
+                </span>
+                <span className="text-xs truncate" style={{ color: '#99A1AF', lineHeight: '18px' }}>
+                  {vehicle.variant} &bull; {vehicle.vin}
+                </span>
+              </div>
+              <button
+                onClick={() => setVehicle(null)}
+                className="flex items-center justify-center transition-all hover:bg-white/5"
+                style={{ width: 32, height: 32, borderRadius: 8, marginRight: 12 }}
+              >
+                <X size={14} color="#99A1AF" />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setVinModalOpen(true)}
+              className="flex items-center transition-all hover:brightness-125"
+              style={{
+                height: 57,
+                paddingLeft: 17,
+                paddingRight: 17,
+                borderRadius: 14,
+                border: '1px dashed rgba(255, 255, 255, 0.20)',
+                background: 'rgba(255, 255, 255, 0.03)',
+                marginBottom: 16,
+                gap: 10,
+              }}
+            >
+              <Plus size={16} color="#657081" />
+              <span style={{ color: '#99A1AF', fontSize: 14, lineHeight: '21px' }}>
+                Add VIN to use your car
               </span>
             </button>
-          </div>
-        </div>
+          )}
 
-        {/* Example Prompts */}
-        <div style={{ marginTop: 24 }}>
-          <div style={{ color: '#6A7282', fontSize: 14, fontWeight: 500, lineHeight: '21px', marginBottom: 12 }}>
-            Try these examples:
-          </div>
-          <div className="flex flex-wrap" style={{ gap: 8 }}>
-            {examplePrompts.map((example) => (
-              <button
-                key={example}
-                onClick={() => handleExampleClick(example)}
-                className="transition-all hover:brightness-125"
+          {/* Prompt Textarea Container */}
+          <div
+            style={{
+              width: '100%',
+              borderRadius: 16,
+              border: '0.8px solid rgba(255, 255, 255, 0.10)',
+              background: '#181D25',
+              overflow: 'hidden',
+            }}
+          >
+            <div className="p-4 md:p-5 md:px-6" style={{ background: 'rgba(38, 38, 38, 0.30)' }}>
+              <textarea
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                placeholder="Describe your video... e.g., 'Create a cinematic reveal at sunset with dramatic camera movements showcasing the car's sleek design and performance features'"
+                className="w-full bg-transparent text-white outline-none resize-none h-[100px] md:h-[140px]"
                 style={{
-                  height: 37,
-                  padding: '0 17px',
-                  borderRadius: 10,
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '0.8px solid rgba(255, 255, 255, 0.10)',
+                  fontSize: 16,
+                  fontFamily: 'var(--font-family-display)',
+                  lineHeight: '24px',
+                }}
+              />
+            </div>
+
+            {/* Bottom bar */}
+            <div
+              className="flex items-center justify-between flex-wrap gap-3"
+              style={{
+                minHeight: 64,
+                padding: '12px 16px',
+                borderTop: '0.8px solid rgba(255, 255, 255, 0.05)',
+              }}
+            >
+              <div className="flex items-center" style={{ gap: 12, fontSize: 14 }}>
+                <span style={{ color: '#6A7282' }}>
+                  {prompt.length} characters
+                </span>
+                {vehicle && (
+                  <>
+                    <span className="hidden sm:inline" style={{ color: 'rgba(255, 255, 255, 0.20)' }}>&bull;</span>
+                    <div className="hidden sm:flex items-center" style={{ gap: 10 }}>
+                      <span style={{ color: '#657081' }}>VIN attached</span>
+                      <CheckCircle size={16} color="#657081" />
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <button
+                onClick={handleGenerate}
+                disabled={!prompt.trim()}
+                className="transition-all hover:brightness-110"
+                style={{
+                  minHeight: 48,
+                  padding: '14px 24px',
+                  borderRadius: 999,
+                  background: prompt.trim() ? '#657081' : '#181D25',
+                  boxShadow: prompt.trim() ? 'none' : '0px 0px 0px 1px #2C343F inset',
+                  border: 'none',
+                  cursor: prompt.trim() ? 'pointer' : 'not-allowed',
                   display: 'flex',
                   alignItems: 'center',
-                  cursor: 'pointer',
+                  justifyContent: 'center',
+                  gap: 7,
                 }}
               >
-                <span style={{ color: '#99A1AF', fontSize: 13, lineHeight: '19.5px' }}>
-                  {example}
+                <span style={{ color: '#FCFCFD', fontSize: 14, lineHeight: '20px' }}>
+                  Generate
                 </span>
               </button>
-            ))}
+            </div>
           </div>
-        </div>
 
+          {/* Example Prompts */}
+          <div style={{ marginTop: 24 }}>
+            <div style={{ color: '#6A7282', fontSize: 14, fontWeight: 500, lineHeight: '21px', marginBottom: 12 }}>
+              Try these examples:
+            </div>
+            <div className="flex flex-wrap" style={{ gap: 8 }}>
+              {examplePrompts.map((example) => (
+                <button
+                  key={example}
+                  onClick={() => handleExampleClick(example)}
+                  className="transition-all hover:brightness-125"
+                  style={{
+                    height: 37,
+                    padding: '0 17px',
+                    borderRadius: 10,
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '0.8px solid rgba(255, 255, 255, 0.10)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <span style={{ color: '#99A1AF', fontSize: 13, lineHeight: '19.5px' }}>
+                    {example}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+        </div>
       </div>
 
       {/* ============ VIN Modal ============ */}
       {vinModalOpen && (
         <div
-          className="fixed inset-0 flex items-center justify-center"
+          className="fixed inset-0 flex items-center justify-center p-4"
           style={{ zIndex: 200, background: 'rgba(0, 0, 0, 0.70)' }}
           onClick={() => setVinModalOpen(false)}
         >
           <div
             onClick={(e) => e.stopPropagation()}
+            className="w-full"
             style={{
-              width: 480,
+              maxWidth: 480,
               background: '#181D25',
               borderRadius: 20,
               border: '0.8px solid rgba(255, 255, 255, 0.10)',
@@ -285,8 +295,8 @@ export default function Dashboard() {
                   onChange={(e) => setVinInput(e.target.value.toUpperCase())}
                   placeholder="e.g. WAUZZZ8V5KA123456"
                   maxLength={17}
+                  className="w-full outline-none"
                   style={{
-                    width: '100%',
                     height: 48,
                     padding: '0 16px',
                     background: 'rgba(38, 38, 38, 0.30)',
@@ -296,7 +306,6 @@ export default function Dashboard() {
                     fontSize: 16,
                     fontFamily: 'monospace',
                     letterSpacing: 1.5,
-                    outline: 'none',
                   }}
                   onFocus={(e) => (e.target.style.borderColor = 'rgba(255,255,255,0.25)')}
                   onBlur={(e) => (e.target.style.borderColor = 'rgba(255,255,255,0.10)')}

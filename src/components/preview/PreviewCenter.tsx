@@ -14,12 +14,12 @@ export default function PreviewCenter({ selectedShot, carImage }: PreviewCenterP
 
   return (
     <div
-      className="flex-1 flex flex-col overflow-hidden"
+      className="flex flex-col overflow-hidden shrink-0 md:shrink md:flex-1"
       style={{ background: '#101319', minWidth: 0, minHeight: 0 }}
     >
       {/* Header */}
       <div
-        className="flex items-center justify-between shrink-0"
+        className="hidden md:flex items-center justify-between shrink-0"
         style={{ padding: '24px 24px 0 24px', height: 54 }}
       >
         <span
@@ -54,13 +54,12 @@ export default function PreviewCenter({ selectedShot, carImage }: PreviewCenterP
 
       {/* Preview Viewport */}
       <div
-        className="flex-1 flex items-center justify-center overflow-hidden"
-        style={{ padding: 24, minHeight: 0 }}
+        className="flex items-center justify-center overflow-hidden md:flex-1"
+        style={{ padding: '12px 16px', minHeight: 0 }}
       >
         <div
-          className="relative overflow-hidden"
+          className="relative overflow-hidden w-full"
           style={{
-            width: '100%',
             maxHeight: '100%',
             aspectRatio: '16 / 9',
             borderRadius: 16,
@@ -104,7 +103,7 @@ export default function PreviewCenter({ selectedShot, carImage }: PreviewCenterP
 
           {/* Center crosshair */}
           <div
-            className="absolute pointer-events-none"
+            className="absolute pointer-events-none hidden md:block"
             style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)', width: 32, height: 32 }}
           >
             <div className="absolute" style={{ left: 16, top: 0, width: 1, height: 32, background: 'rgba(10, 130, 223, 0.40)' }} />
@@ -116,9 +115,9 @@ export default function PreviewCenter({ selectedShot, carImage }: PreviewCenterP
             <div
               className="absolute"
               style={{
-                left: 16,
-                bottom: 16,
-                padding: '8px 12px',
+                left: 12,
+                bottom: 12,
+                padding: '6px 10px',
                 background: 'rgba(0, 0, 0, 0.60)',
                 borderRadius: 10,
                 border: '0.8px solid rgba(255, 255, 255, 0.10)',
