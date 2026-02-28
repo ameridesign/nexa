@@ -90,7 +90,7 @@ export default function PreviewPage() {
 
   return (
     <div
-      className="flex flex-col w-screen h-screen overflow-hidden"
+      className="flex flex-col w-full h-full overflow-hidden"
       style={{ background: '#101319' }}
     >
       {/* ============ Top Header Bar ============ */}

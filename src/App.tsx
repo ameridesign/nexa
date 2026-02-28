@@ -7,18 +7,13 @@ import ResultsPage from './components/results/ResultsPage'
 function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Layout>
-              <Dashboard />
-            </Layout>
-          }
-        />
-        <Route path="/preview" element={<PreviewPage />} />
-        <Route path="/results" element={<ResultsPage />} />
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/preview" element={<PreviewPage />} />
+          <Route path="/results" element={<ResultsPage />} />
+        </Routes>
+      </Layout>
     </BrowserRouter>
   )
 }

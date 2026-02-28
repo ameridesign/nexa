@@ -4,30 +4,30 @@ import {
   Play,
   Pause,
   Volume2,
-  Pin,
+  Check,
   Download,
   ChevronDown,
   User,
   X,
   CheckCircle,
   Sparkles,
+  ArrowLeft,
 } from 'lucide-react'
-import AudiLogo from '../ui/AudiLogo'
 
 const BASE = import.meta.env.BASE_URL
 
 interface Version {
   id: number
   label: string
-  pinned: boolean
+  selected: boolean
   video: string
   thumbnail: string
 }
 
 const defaultVersions: Version[] = [
-  { id: 1, label: 'Version 1', pinned: false, video: `${BASE}opening-shot-video.mp4`, thumbnail: `${BASE}opening-shot.avif` },
-  { id: 2, label: 'Version 2', pinned: true, video: `${BASE}Car_Driving_Away_Video_Generated.mp4`, thumbnail: `${BASE}dynamic-pan.png` },
-  { id: 3, label: 'Version 3', pinned: false, video: `${BASE}opening-shot-video.mp4`, thumbnail: `${BASE}close-up.jpg` },
+  { id: 1, label: 'Version 1', selected: true, video: `${BASE}opening-shot-video.mp4`, thumbnail: `${BASE}opening-shot.avif` },
+  { id: 2, label: 'Version 2', selected: false, video: `${BASE}Car_Driving_Away_Video_Generated.mp4`, thumbnail: `${BASE}dynamic-pan.png` },
+  { id: 3, label: 'Version 3', selected: false, video: `${BASE}opening-shot-video.mp4`, thumbnail: `${BASE}close-up.jpg` },
 ]
 
 type AspectRatio = '9:16' | '16:9' | '1:1'
@@ -72,10 +72,10 @@ function LinkedInIcon() {
 
 function VideoCard({
   version,
-  onTogglePin,
+  onToggleSelect,
 }: {
   version: Version
-  onTogglePin: () => void
+  onToggleSelect: () => void
 }) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [playing, setPlaying] = useState(false)
@@ -102,7 +102,7 @@ function VideoCard({
 
   return (
     <div className="flex-1 flex flex-col" style={{ gap: 12 }}>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center">
         <div
           className="flex items-center"
           style={{
@@ -116,23 +116,6 @@ function VideoCard({
             {version.label}
           </span>
         </div>
-        <button
-          onClick={onTogglePin}
-          className="flex items-center transition-all hover:brightness-125"
-          style={{
-            height: 26,
-            paddingLeft: 8,
-            paddingRight: 8,
-            borderRadius: 10,
-            background: version.pinned ? 'rgba(10, 130, 223, 0.20)' : 'rgba(255, 255, 255, 0.05)',
-            gap: 6,
-          }}
-        >
-          <Pin size={12} color={version.pinned ? '#0A82DF' : '#99A1AF'} fill={version.pinned ? '#0A82DF' : 'none'} />
-          <span style={{ color: version.pinned ? '#0A82DF' : '#99A1AF', fontSize: 12, fontWeight: 600, lineHeight: '18px' }}>
-            {version.pinned ? 'Pinned' : 'Pin'}
-          </span>
-        </button>
       </div>
 
       <div
@@ -141,7 +124,7 @@ function VideoCard({
           borderRadius: 14,
           background: 'linear-gradient(180deg, #0A1929 0%, black 100%)',
           boxShadow: '0px 25px 50px -12px rgba(0, 0, 0, 0.25)',
-          border: '0.8px solid rgba(255, 255, 255, 0.10)',
+          border: version.selected ? '2px solid #0A82DF' : '0.8px solid rgba(255, 255, 255, 0.10)',
           aspectRatio: '16 / 9',
         }}
       >
@@ -158,6 +141,25 @@ function VideoCard({
           className="absolute inset-x-0 bottom-0 pointer-events-none"
           style={{ height: '50%', background: 'linear-gradient(0deg, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0) 100%)' }}
         />
+
+        {/* Selection check icon — top right corner */}
+        <button
+          onClick={onToggleSelect}
+          className="absolute flex items-center justify-center transition-all hover:scale-110"
+          style={{
+            top: 12,
+            right: 12,
+            width: 32,
+            height: 32,
+            borderRadius: 9999,
+            background: version.selected ? '#0A82DF' : 'rgba(0, 0, 0, 0.40)',
+            border: version.selected ? '2px solid #0A82DF' : '2px solid rgba(255, 255, 255, 0.40)',
+            zIndex: 10,
+          }}
+        >
+          {version.selected && <Check size={18} color="white" strokeWidth={3} />}
+        </button>
+
         <button
           onClick={togglePlay}
           className="absolute flex items-center justify-center transition-all hover:scale-105"
@@ -185,7 +187,7 @@ function VideoCard({
 
 /* ---- Export Settings Panel ---- */
 
-function ExportPanel({ onExport }: { onExport: () => void }) {
+function ExportPanel({ onExport, selectedCount }: { onExport: () => void; selectedCount: number }) {
   const [aspect, setAspect] = useState<AspectRatio>('16:9')
   const [resolution, setResolution] = useState<Resolution>('4k')
   const [frameRate, setFrameRate] = useState<FrameRate>('30')
@@ -322,10 +324,12 @@ function ExportPanel({ onExport }: { onExport: () => void }) {
           style={{ minHeight: 48, borderRadius: 999, background: '#657081', gap: 7 }}
         >
           <Download size={16} color="white" />
-          <span style={{ color: '#FCFCFD', fontSize: 14, lineHeight: '20px' }}>Export Video</span>
+          <span style={{ color: '#FCFCFD', fontSize: 14, lineHeight: '20px' }}>
+            Export{selectedCount > 0 ? ` ${selectedCount} Video${selectedCount > 1 ? 's' : ''}` : ' Video'}
+          </span>
         </button>
         <p className="text-center" style={{ marginTop: 12, color: '#6A7282', fontSize: 12, lineHeight: '18px' }}>
-          Estimated size: ~45 MB &bull; Time: ~2 min
+          Estimated size: ~{selectedCount > 1 ? selectedCount * 45 : 45} MB &bull; Time: ~{selectedCount > 1 ? selectedCount * 2 : 2} min
         </p>
       </div>
     </div>
@@ -485,9 +489,11 @@ export default function ResultsPage() {
   const [compareIds, setCompareIds] = useState<number[]>([1, 2])
   const [showExportModal, setShowExportModal] = useState(false)
 
-  const togglePin = (id: number) => {
-    setVersions(versions.map((v) => (v.id === id ? { ...v, pinned: !v.pinned } : v)))
+  const toggleSelect = (id: number) => {
+    setVersions(versions.map((v) => (v.id === id ? { ...v, selected: !v.selected } : v)))
   }
+
+  const selectedCount = versions.filter((v) => v.selected).length
 
   const toggleCompare = (id: number) => {
     if (compareIds.includes(id)) {
@@ -508,14 +514,14 @@ export default function ResultsPage() {
   const shotCount = 3
 
   return (
-    <div className="flex flex-col w-screen h-screen overflow-hidden" style={{ background: '#101319' }}>
+    <div className="flex flex-col w-full h-full overflow-hidden" style={{ background: '#101319' }}>
       {/* Top Header */}
       <header
         className="flex items-center justify-between shrink-0"
         style={{ height: 64, paddingLeft: 24, paddingRight: 24, background: 'rgba(2, 2, 3, 0.80)', borderBottom: '0.8px solid black', zIndex: 50 }}
       >
-        <button onClick={() => navigate(-1)} className="flex items-center hover:opacity-80 transition-opacity" style={{ gap: 12 }}>
-          <AudiLogo size={69} className="text-white" />
+        <button onClick={() => navigate(-1)} className="flex items-center justify-center hover:bg-white/5 transition-all" style={{ width: 36, height: 36, borderRadius: 10 }}>
+          <ArrowLeft size={18} color="#99A1AF" />
         </button>
         <span style={{ color: '#99A1AF', fontSize: 14, lineHeight: '21px' }}>
           {prompt ? `${prompt.slice(0, 30)}${prompt.length > 30 ? '...' : ''}.avp` : 'A6 e-tron Showcase.avp'}
@@ -554,7 +560,7 @@ export default function ResultsPage() {
             {/* Video players */}
             <div className="flex" style={{ gap: 24 }}>
               {visibleVersions.map((v) => (
-                <VideoCard key={v.id} version={v} onTogglePin={() => togglePin(v.id)} />
+                <VideoCard key={v.id} version={v} onToggleSelect={() => toggleSelect(v.id)} />
               ))}
             </div>
 
@@ -574,7 +580,7 @@ export default function ResultsPage() {
           </div>
 
           {/* Right: Export Settings */}
-          <ExportPanel onExport={() => setShowExportModal(true)} />
+          <ExportPanel onExport={() => setShowExportModal(true)} selectedCount={selectedCount} />
         </div>
       </div>
 
