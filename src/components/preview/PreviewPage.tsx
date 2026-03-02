@@ -5,6 +5,7 @@ import ShotsPanel from './ShotsPanel'
 import type { Shot } from './ShotsPanel'
 import PreviewCenter from './PreviewCenter'
 import AdjustmentsPanel from './AdjustmentsPanel'
+import PlaybackModal from './PlaybackModal'
 import { useSidebar } from '../layout/SidebarContext'
 
 const BASE = import.meta.env.BASE_URL
@@ -35,6 +36,7 @@ export default function PreviewPage() {
   const [showSaved, setShowSaved] = useState(false)
   const [generating, setGenerating] = useState(false)
   const [genProgress, setGenProgress] = useState(0)
+  const [playbackOpen, setPlaybackOpen] = useState(false)
 
   const totalDuration = shots.reduce((sum, s) => sum + s.duration, 0)
   const selectedShot = shots.find((s) => s.id === selectedShotId)
@@ -150,7 +152,7 @@ export default function PreviewPage() {
         </div>
 
         <div className="flex items-center flex-1 md:flex-none justify-center" style={{ gap: 8 }}>
-          <button className="flex items-center justify-center transition-all hover:brightness-110" style={{ minHeight: 44, padding: '10px 16px', background: '#181D25', boxShadow: '0px 0px 0px 1px #2C343F inset', borderRadius: 999, gap: 6 }}>
+          <button onClick={() => setPlaybackOpen(true)} className="flex items-center justify-center transition-all hover:brightness-110" style={{ minHeight: 44, padding: '10px 16px', background: '#181D25', boxShadow: '0px 0px 0px 1px #2C343F inset', borderRadius: 999, gap: 6 }}>
             <Play size={14} color="white" />
             <span className="hidden sm:inline" style={{ color: '#FCFCFD', fontSize: 14, lineHeight: '20px' }}>Preview</span>
           </button>
@@ -194,6 +196,16 @@ export default function PreviewPage() {
           )}
         </div>
       </footer>
+
+      {/* Playback modal */}
+      {playbackOpen && (
+        <PlaybackModal
+          shots={shots}
+          onClose={() => setPlaybackOpen(false)}
+          onDeleteShot={handleDeleteShot}
+          onAddShot={handleAddShot}
+        />
+      )}
 
       {/* Generating modal */}
       {generating && (
