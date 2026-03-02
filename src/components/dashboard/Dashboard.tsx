@@ -144,7 +144,7 @@ export default function Dashboard() {
               overflow: 'hidden',
             }}
           >
-            <div className="p-4 md:p-5 md:px-6" style={{ background: 'rgba(38, 38, 38, 0.30)' }}>
+            <div style={{ padding: '20px 24px', background: 'rgba(38, 38, 38, 0.30)' }}>
               <textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}

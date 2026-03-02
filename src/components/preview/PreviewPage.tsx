@@ -28,7 +28,7 @@ export default function PreviewPage() {
   const { openMobile } = useSidebar()
 
   const [shots, setShots] = useState<Shot[]>(defaultShots)
-  const [selectedShotId, setSelectedShotId] = useState('3')
+  const [selectedShotId, setSelectedShotId] = useState('1')
   const [profileOpen, setProfileOpen] = useState(false)
   const [qualityOpen, setQualityOpen] = useState(false)
   const [resolution, setResolution] = useState('4K')
