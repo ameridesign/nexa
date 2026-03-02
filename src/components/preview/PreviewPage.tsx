@@ -11,8 +11,8 @@ const BASE = import.meta.env.BASE_URL
 
 const defaultShots: Shot[] = [
   { id: '1', name: 'Opening Shot', duration: 3, thumbnail: `${BASE}opening-shot.avif`, video: `${BASE}opening-shot-video.mp4` },
-  { id: '2', name: 'Close-up', duration: 2, thumbnail: `${BASE}close-up.jpg` },
-  { id: '3', name: 'Dynamic Pan', duration: 4, thumbnail: `${BASE}dynamic-pan.png` },
+  { id: '2', name: 'Close-up', duration: 2, thumbnail: `${BASE}close-up.jpg`, video: `${BASE}close-up-video.mp4` },
+  { id: '3', name: 'Dynamic Pan', duration: 4, thumbnail: `${BASE}dynamic-pan.png`, video: `${BASE}dynamic-pan-video.mp4` },
 ]
 
 const resolutionOptions = ['4K', '2K', '1080p', '720p']
