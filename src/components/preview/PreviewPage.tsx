@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Play, Sparkles, Save, User, LogOut, Settings, CreditCard, ChevronDown, Menu, ArrowLeft } from 'lucide-react'
-import AudiLogo from '../ui/AudiLogo'
 import ShotsPanel from './ShotsPanel'
 import type { Shot } from './ShotsPanel'
 import PreviewCenter from './PreviewCenter'
@@ -91,10 +90,7 @@ export default function PreviewPage() {
           <button onClick={openMobile} className="md:hidden flex items-center justify-center transition-all hover:bg-white/10 active:scale-95" style={{ width: 36, height: 36, borderRadius: 8 }}>
             <Menu size={18} color="#99A1AF" />
           </button>
-          <button onClick={() => navigate('/')} className="hidden md:flex items-center hover:opacity-80 transition-opacity" style={{ gap: 12, marginLeft: 12 }}>
-            <AudiLogo size={69} className="text-white" />
-          </button>
-          <button onClick={() => navigate('/')} className="md:hidden flex items-center justify-center hover:bg-white/5 transition-all" style={{ width: 32, height: 32, borderRadius: 8 }}>
+          <button onClick={() => navigate('/')} className="flex items-center justify-center hover:bg-white/5 transition-all" style={{ width: 32, height: 32, borderRadius: 8, marginLeft: 4 }}>
             <ArrowLeft size={16} color="#99A1AF" />
           </button>
         </div>
